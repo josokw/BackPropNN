@@ -21,12 +21,18 @@ void showVectorVals(const string& label, const vector<double>& v)
   cout << endl;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-  TrainingData trainData("trainingData.txt");
+  if (argc != 2)
+  {
+    cerr << "Usage " << argv[0] << " <file name>" << endl;
+    exit(1);
+  }
+  TrainingData trainData(argv[1]);
   // e.g., { 3, 2, 1 }
   vector<unsigned> topology;
   trainData.getTopology(topology);
+  cout << "1"<< endl;
 
   Net myNet(topology);
   vector<double> inputVals;
