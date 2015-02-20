@@ -12,11 +12,11 @@
 
 using namespace std;
 
-void showVectorVals(string label, vector<double>& v)
+void showVectorVals(const string& label, const vector<double>& v)
 {
   cout << label << " ";
-  for (unsigned i = 0; i < v.size(); ++i) {
-    cout << v[i] << " ";
+  for (const auto e: v) {
+    cout << e << " ";
   }
   cout << endl;
 }
