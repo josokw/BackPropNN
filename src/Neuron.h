@@ -4,36 +4,34 @@
 #include <vector>
 #include <cstdlib>
 
-struct Connection
-{
-  double weight;
-  double deltaWeight;
-};
-
-class Neuron;
-typedef std::vector<Neuron> Layer;
-
 class Neuron
 {
 public:
+  using Layer = std::vector<Neuron>;
   Neuron(unsigned numOutputs, unsigned myIndex);
-  void setOutputVal(double val) { m_outputVal = val; }
-  double getOutputVal(void) const { return m_outputVal; }
-  void feedForward(const Layer &prevLayer);
+  ~Neuron() = default;
+  void setOutputVal(double val) { _outputVal = val; }
+  double getOutputVal(void) const { return _outputVal; }
+  void feedForward(const Neuron::Layer& prevLayer);
   void calcOutputGradients(double targetVal);
-  void calcHiddenGradients(const Layer &nextLayer);
-  void updateInputWeights(Layer &prevLayer);
+  void calcHiddenGradients(const Neuron::Layer& nextLayer);
+  void updateInputWeights(Neuron::Layer& prevLayer);
 private:
+  struct Connection
+  {
+    double weight;
+    double deltaWeight;
+  };
   static double eta;   // [0.0..1.0] overall net training rate
   static double alpha; // [0.0..n] multiplier of last weight change (momentum)
   static double transferFunction(double x);
   static double transferFunctionDerivative(double x);
-  static double randomWeight(void) { return std::rand() / double(RAND_MAX); }
-  double sumDOW(const Layer &nextLayer) const;
-  double m_outputVal;
-  std::vector<Connection> m_outputWeights;
-  unsigned m_myIndex;
-  double m_gradient;
+  static double randomWeight() { return std::rand() / double(RAND_MAX); }
+  double sumDOW(const Neuron::Layer& nextLayer) const;
+  double _outputVal;
+  std::vector<Connection> _outputWeights;
+  unsigned _myIndex;
+  double _gradient;
 };
 
 #endif // NEURON_H

@@ -7,16 +7,17 @@
 class Net
 {
 public:
-  Net(const std::vector<unsigned> &topology);
-  void feedForward(const std::vector<double> &inputVals);
-  void backProp(const std::vector<double> &targetVals);
-  void getResults(std::vector<double> &resultVals) const;
-  double getRecentAverageError(void) const { return m_recentAverageError; }
+  Net(const std::vector<unsigned>& topology);
+  ~Net() = default;
+  void feedForward(const std::vector<double>& inputVals);
+  void backProp(const std::vector<double>& targetVals);
+  void getResults(std::vector<double>& resultVals) const;
+  double getRecentAverageError() const { return _recentAverageError; }
 private:
-  std::vector<Layer> m_layers; // m_layers[layerNum][neuronNum]
-  double m_error;
-  double m_recentAverageError;
-  static double m_recentAverageSmoothingFactor;
+  std::vector<Neuron::Layer> _layers; // m_layers[layerNum][neuronNum]
+  double _error;
+  double _recentAverageError;
+  static double _recentAverageSmoothingFactor;
 };
 
 #endif // NET_H
