@@ -32,7 +32,6 @@ int main(int argc, char* argv[])
   // e.g., { 3, 2, 1 }
   vector<unsigned> topology;
   trainData.getTopology(topology);
-  cout << "1"<< endl;
 
   Net myNet(topology);
   vector<double> inputVals;
@@ -52,7 +51,6 @@ int main(int argc, char* argv[])
     // Collect the net's actual output results:
     myNet.getResults(resultVals);
     showVectorVals("Outputs:", resultVals);
-
     // Train the net what the outputs should have been:
     trainData.getTargetOutputs(targetVals);
     showVectorVals("Targets:", targetVals);

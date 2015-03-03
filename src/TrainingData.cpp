@@ -6,12 +6,11 @@ using namespace std;
 TrainingData::TrainingData(const std::string& filename)
 {
   _trainingDataFile.open(filename.c_str());
-  cout << "open" << endl;
 }
 
 TrainingData::~TrainingData()
 {
-  //_trainingDataFile.close();
+  _trainingDataFile.close();
 }
 
 void TrainingData::getTopology(vector<unsigned>& topology)

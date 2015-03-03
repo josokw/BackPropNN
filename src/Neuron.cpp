@@ -69,7 +69,7 @@ double Neuron::transferFunction(double x)
 double Neuron::transferFunctionDerivative(double x)
 {
   // tanh derivative
-  return 1.0 - x * x;
+  return 1.0 - tanh(x) * tanh(x);
 }
 
 void Neuron::feedForward(const Neuron::Layer& prevLayer)

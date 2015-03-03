@@ -7,10 +7,10 @@ using namespace std;
 
 double Net::_recentAverageSmoothingFactor = 100.0; // Number of training samples to average over
 
-Net::Net(const vector<unsigned> &topology)
+Net::Net(const vector<unsigned>& topology)
   : _layers {}
   , _error {0}
-  , _recentAverageError {0}
+  , _recentAverageError {0.5}
 {
   unsigned numLayers = topology.size();
   for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
@@ -27,7 +27,7 @@ Net::Net(const vector<unsigned> &topology)
   }
 }
 
-void Net::getResults(vector<double> &resultVals) const
+void Net::getResults(vector<double>& resultVals) const
 {
   resultVals.clear();
   for (unsigned n = 0; n < _layers.back().size() - 1; ++n) {
@@ -35,7 +35,7 @@ void Net::getResults(vector<double> &resultVals) const
   }
 }
 
-void Net::backProp(const vector<double> &targetVals)
+void Net::backProp(const vector<double>& targetVals)
 {
   // Calculate overall net error (RMS of output neuron errors)
   Neuron::Layer& outputLayer = _layers.back();
@@ -77,7 +77,7 @@ void Net::backProp(const vector<double> &targetVals)
   }
 }
 
-void Net::feedForward(const vector<double> &inputVals)
+void Net::feedForward(const vector<double>& inputVals)
 {
   assert(inputVals.size() == _layers[0].size() - 1);
   // Assign (latch) the input values into the input neurons
