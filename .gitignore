@@ -17,6 +17,8 @@
 *.out
 *.app
 backpropnn
+xor
+counting
 # Backup files
 *~
 # Dependencies
