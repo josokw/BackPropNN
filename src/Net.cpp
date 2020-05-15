@@ -17,10 +17,12 @@ Net::Net(const std::vector<unsigned>& topology)
     unsigned numOutputs = layerNum == topology.size() - 1 ? 0 : topology[layerNum + 1];
     // We have a new layer, now fill it with neurons, and
     // add a bias neuron in each layer.
+    std::cout << "Neurons ";
     for (unsigned neuronNum = 0; neuronNum <= topology[layerNum]; ++neuronNum) {
       layers_.back().push_back(Neuron(numOutputs, neuronNum));
-      std::cout << "Made a Neuron!" << std::endl;
+      std::cout << '.';
     }
+    std::cout << std::endl;
     // Force the bias node's output to 1.0 (it was the last neuron pushed in this layer):
     layers_.back().back().setOutputVal(1.0);
   }
