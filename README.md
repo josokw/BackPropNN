@@ -6,3 +6,9 @@
 Source: David Miller C++ code example.
 Goal: refactoring example code to modern C++.
 
+The C++ code is compilable by **g++ v9.3.0**.
+Goto the *src* directory and type:
+
+```bash
+make
+```
