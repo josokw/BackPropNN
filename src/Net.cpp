@@ -1,18 +1,17 @@
 #include "Net.h"
+
 #include <cassert>
 #include <cmath>
 #include <iostream>
 
-using namespace std;
-
 double Net::_recentAverageSmoothingFactor = 100.0; // Number of training samples to average over
 
-Net::Net(const vector<unsigned>& topology)
+Net::Net(const std::vector<unsigned>& topology)
   : _layers {}
   , _error {0}
   , _recentAverageError {0.5}
 {
-  unsigned numLayers = topology.size();
+  auto numLayers = topology.size();
   for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
     _layers.push_back(Neuron::Layer());
     unsigned numOutputs = layerNum == topology.size() - 1 ? 0 : topology[layerNum + 1];
@@ -20,14 +19,14 @@ Net::Net(const vector<unsigned>& topology)
     // add a bias neuron in each layer.
     for (unsigned neuronNum = 0; neuronNum <= topology[layerNum]; ++neuronNum) {
       _layers.back().push_back(Neuron(numOutputs, neuronNum));
-      cout << "Made a Neuron!" << endl;
+      std::cout << "Made a Neuron!" << std::endl;
     }
     // Force the bias node's output to 1.0 (it was the last neuron pushed in this layer):
     _layers.back().back().setOutputVal(1.0);
   }
 }
 
-void Net::getResults(vector<double>& resultVals) const
+void Net::getResults(std::vector<double>& resultVals) const
 {
   resultVals.clear();
   for (unsigned n = 0; n < _layers.back().size() - 1; ++n) {
@@ -35,7 +34,7 @@ void Net::getResults(vector<double>& resultVals) const
   }
 }
 
-void Net::backProp(const vector<double>& targetVals)
+void Net::backProp(const std::vector<double>& targetVals)
 {
   // Calculate overall net error (RMS of output neuron errors)
   Neuron::Layer& outputLayer = _layers.back();
@@ -77,7 +76,7 @@ void Net::backProp(const vector<double>& targetVals)
   }
 }
 
-void Net::feedForward(const vector<double>& inputVals)
+void Net::feedForward(const std::vector<double>& inputVals)
 {
   assert(inputVals.size() == _layers[0].size() - 1);
   // Assign (latch) the input values into the input neurons

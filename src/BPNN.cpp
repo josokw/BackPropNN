@@ -6,42 +6,41 @@
 
 #include "Net.h"
 #include "TrainingData.h"
+
 #include <vector>
 #include <iostream>
 #include <cassert>
 
-using namespace std;
-
-void showVectorVals(const string& label, const vector<double>& v)
+void showVectorVals(const std::string& label, const std::vector<double>& v)
 {
-  cout << label << " ";
+  std::cout << label << " ";
   for (const auto e: v) {
-    cout << e << " ";
+    std::cout << e << " ";
   }
-  cout << endl;
+  std::cout << std::endl;
 }
 
 int main(int argc, char* argv[])
 {
   if (argc != 2)
   {
-    cerr << "Usage " << argv[0] << " <file name>" << endl;
+    std::cerr << "Usage " << argv[0] << " <file name>\n\n";
     exit(1);
   }
   TrainingData trainData(argv[1]);
   // e.g., { 3, 2, 1 }
-  vector<unsigned> topology;
+  std::vector<unsigned> topology;
   trainData.getTopology(topology);
 
   Net myNet(topology);
-  vector<double> inputVals;
-  vector<double> targetVals;
-  vector<double> resultVals;
+  std::vector<double> inputVals;
+  std::vector<double> targetVals;
+  std::vector<double> resultVals;
   int trainingPass = 0;
 
   while (!trainData.isEof()) {
     ++trainingPass;
-    cout << endl << "Pass " << trainingPass;
+    std::cout << "\nPass " << trainingPass;
     // Get new input data and feed it forward:
     if (trainData.getNextInputs(inputVals) != topology[0]) {
       break;
@@ -57,8 +56,8 @@ int main(int argc, char* argv[])
     assert(targetVals.size() == topology.back());
     myNet.backProp(targetVals);
     // Report how well the training is working, average over recent samples:
-    cout << "Net recent average error: "
-         << myNet.getRecentAverageError() << endl;
+    std::cout << "Net recent average error: "
+              << myNet.getRecentAverageError() << std::endl;
   }
-  cout << endl << "Done" << endl;
+  std::cout << "\nDone\n";
 }

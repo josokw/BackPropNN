@@ -15,13 +15,15 @@ class TrainingData
 public:
   TrainingData(const std::string& filename);
   ~TrainingData();
-  bool isEof() { return _trainingDataFile.eof(); }
+  
+  bool isEof() { return trainingDataFile_.eof(); }
   void getTopology(std::vector<unsigned> &topology);
   // Returns the number of input values read from the file:
   unsigned getNextInputs(std::vector<double>& inputVals);
   unsigned getTargetOutputs(std::vector<double>& targetOutputVals);
+
 private:
-  std::ifstream _trainingDataFile;
+  std::ifstream trainingDataFile_;
 };
 
 #endif // TRAININGDATA_H
