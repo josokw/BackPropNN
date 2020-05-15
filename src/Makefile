@@ -1,5 +1,5 @@
 CXX = g++ 
-CXXFLAGS = -std=c++17 -Wall -Wextra
+CXXFLAGS = -std=c++2a -Wall -Wextra
 
 EXECUTABLE = backpropnn
 SOURCES = ${wildcard *.cpp}
