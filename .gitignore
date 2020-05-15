@@ -19,7 +19,11 @@
 backpropnn
 xor
 counting
+
 # Backup files
 *~
 # Dependencies
 depend
+
+# Doxygen
+html
