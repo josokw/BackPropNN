@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
   std::vector<unsigned> topology;
   trainData.getTopology(topology);
 
-  Net myNet(topology);
+  Net myNet{topology};
   std::vector<double> inputVals;
   std::vector<double> targetVals;
   std::vector<double> resultVals;

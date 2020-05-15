@@ -8,18 +8,19 @@ double Net::recentAverageSmoothingFactor_ = 100.0; // Number of training samples
 
 Net::Net(const std::vector<unsigned>& topology)
   : layers_ {}
-  , error_ {0}
+  , error_ {0.0}
   , recentAverageError_ {0.5}
 {
+  std::cout << "NN topology\n";
   auto numLayers = topology.size();
   for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
     layers_.push_back(Neuron::Layer());
-    unsigned numOutputs = layerNum == topology.size() - 1 ? 0 : topology[layerNum + 1];
+    unsigned numOutputs = (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
     // We have a new layer, now fill it with neurons, and
     // add a bias neuron in each layer.
-    std::cout << "Neurons ";
+    std::cout << "Layer " << layerNum + 1 << " neurons + bias neuron ";
     for (unsigned neuronNum = 0; neuronNum <= topology[layerNum]; ++neuronNum) {
-      layers_.back().push_back(Neuron(numOutputs, neuronNum));
+      layers_.back().push_back(Neuron{numOutputs, neuronNum});
       std::cout << '.';
     }
     std::cout << std::endl;
@@ -54,8 +55,8 @@ void Net::backProp(const std::vector<double>& targetVals)
       / (recentAverageSmoothingFactor_ + 1.0);
 
   // Calculate output layer gradients
-  for (unsigned n = 0; n < outputLayer.size() - 1; ++n) {
-    outputLayer[n].calcOutputGradients(targetVals[n]);
+  for (size_t n = 0; auto &neuron : outputLayer) {
+    neuron.calcOutputGradients(targetVals[n++]);
   }
 
   // Calculate hidden layer gradients
