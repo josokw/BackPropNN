@@ -14,3 +14,9 @@ Goto the *src* directory and type:
 ```bash
 make
 ```
+
+Run the code for training a backprop NN:
+
+```bash
+./backpropnn ../data/XOR/txor.txt 
+```
