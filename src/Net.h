@@ -10,15 +10,19 @@
 class Net
 {
 public:
+   using layer_t = std::vector<double>;
+
    Net(const std::vector<unsigned> &topology);
    ~Net() = default;
 
-   void feedForward(const std::vector<double> &inputVals);
-   void backProp(const std::vector<double> &targetVals);
-   void getResults(std::vector<double> &resultVals) const;
+   const auto &topology() const { return topology_; }
+   void feedForward(const layer_t &inputVals);
+   void backProp(const layer_t &targetVals);
+   void getResults(layer_t &resultVals) const;
    double getRecentAverageError() const { return recentAverageError_; }
 
 private:
+   const std::vector<unsigned> &topology_;
    std::vector<Neuron::Layer> layers_; // m_layers[layerNum][neuronNum]
    double error_;
    double recentAverageError_;

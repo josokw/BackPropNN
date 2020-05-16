@@ -8,7 +8,8 @@ double Net::recentAverageSmoothingFactor_ =
    100.0; // Number of training samples to average over
 
 Net::Net(const std::vector<unsigned> &topology)
-   : layers_{}
+   : topology_{topology}
+   , layers_{}
    , error_{0.0}
    , recentAverageError_{0.5}
 {
