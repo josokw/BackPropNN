@@ -29,11 +29,11 @@ void NNtrainer::train()
 
    while (!trainingData_.isEof()) {
       ++trainingPass_;
-      std::cout << "\nPass " << trainingPass_;
       // Get new input data and feed it forward:
       if (trainingData_.getNextInputs(inputVals) != net_.topology()[0]) {
          break;
       }
+      std::cout << "\nPass " << trainingPass_;
       showVectorVals(": Inputs:", inputVals);
       net_.feedForward(inputVals);
       // Collect the net's actual output results:
@@ -49,5 +49,4 @@ void NNtrainer::train()
       std::cout << "Net recent average error: " << net_.getRecentAverageError()
                 << std::endl;
    }
-   std::cout << "\nDone\n";
 }
