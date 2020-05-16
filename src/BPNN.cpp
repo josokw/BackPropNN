@@ -28,11 +28,9 @@ int main(int argc, char *argv[])
       std::cerr << "Usage " << argv[0] << " <file name>\n\n";
       exit(1);
    }
-   TrainingData trainData(argv[1]);
-   // e.g., { 3, 2, 1 }
-   std::vector<unsigned> topology;
-   trainData.getTopology(topology);
-
+   
+   TrainingData trainData{argv[1]};
+   auto topology{trainData.setTopology()};
    Net myNet{topology};
    std::vector<double> inputVals;
    std::vector<double> targetVals;

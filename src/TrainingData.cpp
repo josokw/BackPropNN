@@ -5,6 +5,7 @@
 
 TrainingData::TrainingData(const std::string &filename)
    : trainingDataFile_{filename.c_str()}
+   , topology_{}
 {
    if (not trainingDataFile_) {
    }
@@ -15,7 +16,7 @@ TrainingData::~TrainingData()
    trainingDataFile_.close();
 }
 
-void TrainingData::getTopology(std::vector<unsigned> &topology)
+const std::vector<unsigned> &TrainingData::setTopology()
 {
    std::string line("****");
    std::string label;
@@ -29,8 +30,9 @@ void TrainingData::getTopology(std::vector<unsigned> &topology)
    while (!ss.eof()) {
       unsigned n;
       ss >> n;
-      topology.push_back(n);
+      topology_.push_back(n);
    }
+   return topology_;
 }
 
 unsigned TrainingData::getNextInputs(std::vector<double> &inputVals)

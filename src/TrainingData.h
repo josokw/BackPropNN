@@ -17,13 +17,14 @@ public:
    ~TrainingData();
 
    bool isEof() { return trainingDataFile_.eof(); }
-   void getTopology(std::vector<unsigned> &topology);
+   const std::vector<unsigned> &setTopology();
    // Returns the number of input values read from the file:
    unsigned getNextInputs(std::vector<double> &inputVals);
    unsigned getTargetOutputs(std::vector<double> &targetOutputVals);
 
 private:
    std::ifstream trainingDataFile_;
+   std::vector<unsigned> topology_;
 };
 
 #endif // TRAININGDATA_H
