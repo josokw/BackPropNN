@@ -18,13 +18,13 @@ TrainingData::~TrainingData()
 
 const std::vector<unsigned> &TrainingData::setTopology()
 {
-   std::string line("****");
-   std::string label;
-
+   std::string line;
    getline(trainingDataFile_, line);
-   std::stringstream ss(line);
+   std::stringstream ss{line};
+   std::string label;
    ss >> label;
-   if (this->isEof() || label.compare("topology:") != 0) {
+
+   if (isEof() || label != "topology:") {
       abort();
    }
    while (!ss.eof()) {
@@ -41,11 +41,11 @@ unsigned TrainingData::getNextInputs(std::vector<double> &inputVals)
 
    std::string line;
    getline(trainingDataFile_, line);
-   std::stringstream ss(line);
-
+   std::stringstream ss{line};
    std::string label;
    ss >> label;
-   if (label.compare("in:") == 0) {
+
+   if (label == "in:") {
       double oneValue;
       while (ss >> oneValue) {
          inputVals.push_back(oneValue);
@@ -60,11 +60,11 @@ unsigned TrainingData::getTargetOutputs(std::vector<double> &targetOutputVals)
 
    std::string line;
    getline(trainingDataFile_, line);
-   std::stringstream ss(line);
-
+   std::stringstream ss{line};
    std::string label;
    ss >> label;
-   if (label.compare("out:") == 0) {
+   
+   if (label == "out:") {
       double oneValue;
       while (ss >> oneValue) {
          targetOutputVals.push_back(oneValue);
