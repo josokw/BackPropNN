@@ -1,4 +1,3 @@
-// BPNN.cpp --------------------------------------------------------------------
 // Refactored by Jos Onokiewicz
 //
 // David Miller, http://millermattson.com/dave
@@ -27,15 +26,15 @@ int main(int argc, char *argv[])
    std::ifstream trainingDataStream{argv[1]};
    if (not trainingDataStream) {
       std::cerr << "ERROR: file " << argv[1] << " can not be opened\n";
+      exit(EXIT_FAILURE);
    }
 
-   TrainingData trainData{argv[1]};
-   auto topology{trainData.setTopology()};
-   Net myNet{topology};
+   TrainingData trainData;
 
    trainingDataStream >> trainData;
    std::cout << trainData;
 
+   Net myNet{trainData.getTopology()};
    NNtrainer nntr{myNet, trainData};
 
    nntr.train();
