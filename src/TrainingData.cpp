@@ -1,6 +1,7 @@
 #include "TrainingData.h"
 
 #include <iostream>
+#include <sstream>
 #include <string>
 
 std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)

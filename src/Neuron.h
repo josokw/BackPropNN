@@ -16,6 +16,8 @@ public:
 
    void setOutputVal(double val) { outputVal_ = val; }
    double getOutputVal(void) const { return outputVal_; }
+   /// Sums the previous layer's outputs (which are our inputs).
+   /// Includes the bias node from the previous layer.
    void feedForward(const nndef::neurons_layer_t &prevLayer);
    void calcOutputGradients(double targetVal);
    void calcHiddenGradients(const nndef::neurons_layer_t &nextLayer);
@@ -26,8 +28,10 @@ private:
       double weight;
       double deltaWeight;
    };
-   static double eta;   // [0.0..1.0] overall net training rate
-   static double alpha; // [0.0..n] multiplier of last weight change (momentum)
+   /// [0.0..1.0] overall net training rate.
+   static double eta;
+   // [0.0..n] multiplier of last weight change (momentum)
+   static double alpha; 
 
    static double transferFunction(double x);
    static double transferFunctionDerivative(double x);

@@ -4,11 +4,8 @@
 #include "NNdef.h"
 
 #include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
 
-/// Class to read training data from an input stream.
+/// Class TrainingData for managing training data.
 class TrainingData
 {
    friend std::ostream &operator<<(std::ostream &os, const TrainingData &trnData);

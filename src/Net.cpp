@@ -1,5 +1,6 @@
 #include "Net.h"
 #include "NNdef.h"
+#include "Neuron.h"
 
 #include <cassert>
 #include <cmath>

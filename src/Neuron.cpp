@@ -72,8 +72,7 @@ double Neuron::transferFunctionDerivative(double x)
 void Neuron::feedForward(const Neuron::Layer &prevLayer)
 {
    double sum = 0.0;
-   // Sum the previous layer's outputs (which are our inputs)
-   // Include the bias node from the previous layer.
+ 
    for (auto &neuron : prevLayer) {
       sum += neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight;
    }

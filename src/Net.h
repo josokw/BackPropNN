@@ -4,8 +4,6 @@
 #include "NNdef.h"
 #include "Neuron.h"
 
-#include <vector>
-
 /// The class Net represents a layered neural network (NN).
 /// The NN is dynamically build by the topology data.
 class Net
