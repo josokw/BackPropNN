@@ -1,4 +1,5 @@
 #include "NNtrainer.h"
+#include "NNconfig.h"
 #include "NNdef.h"
 #include "Net.h"
 #include "TrainingData.h"
@@ -24,11 +25,13 @@ void NNtrainer::train()
       std::cout << std::endl;
    };
 
-   while (trainingPass_ < 10000 && net_.getRecentAverageError() > 0.01) {
+   while (trainingPass_ < MAX_ITERATIONS &&
+          net_.getRecentAverageError() > MIN_RECENT_AVERAGE_ERROR) {
       ++trainingPass_;
 
       nndef::values_layer_t resultVals;
-      const auto [inputVals, targetVals] = trainingData_.getRandomChoosenInOut();
+      const auto [inputVals, targetVals] =
+         trainingData_.getRandomChoosenInOut();
 
       std::cout << "\n-- Pass " << trainingPass_;
       showVectorVals(": Inputs:", inputVals);
