@@ -5,6 +5,7 @@
 #include "Neuron.h"
 
 /// The class Net represents a layered neural network (NN).
+/// Layers: 1 input layer, >=1 hidden layers, 1 output layer.
 /// The NN is dynamically build by the topology data.
 class Net
 {
@@ -21,7 +22,7 @@ public:
 private:
    const nndef::topology_t &topology_;
    nndef::neurons_all_layers_t layers_; // m_layers[layerNum][neuronNum]
-   double error_;
+   double RMSerror_;
    double recentAverageError_;
    static double recentAverageSmoothingFactor_;
 };

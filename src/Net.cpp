@@ -12,7 +12,7 @@ double Net::recentAverageSmoothingFactor_ =
 Net::Net(const nndef::topology_t &topology)
    : topology_{topology}
    , layers_{}
-   , error_{0.0}
+   , RMSerror_{0.0}
    , recentAverageError_{0.5}
 {
    std::cout << "NN topology\n";
@@ -47,18 +47,18 @@ void Net::getResults(nndef::values_layer_t &resultVals) const
 void Net::backProp(const nndef::values_layer_t &targetVals)
 {
    // Calculate overall net error (RMS of output neuron errors)
-   Neuron::Layer &outputLayer = layers_.back();
-   error_ = 0.0;
+   nndef::neurons_layer_t &outputLayer = layers_.back();
+   double error = 0.0;
 
    for (unsigned n = 0; n < outputLayer.size() - 1; ++n) {
       double delta = targetVals[n] - outputLayer[n].getOutputVal();
-      error_ += delta * delta;
+      error += delta * delta;
    }
-   error_ /= outputLayer.size() - 1; // get average error squared
-   error_ = sqrt(error_);            // RMS
+   error /= outputLayer.size() - 1; // get average error squared
+   RMSerror_ = sqrt(error);
    // Implement a recent average measurement
    recentAverageError_ =
-      (recentAverageError_ * recentAverageSmoothingFactor_ + error_) /
+      (recentAverageError_ * recentAverageSmoothingFactor_ + RMSerror_) /
       (recentAverageSmoothingFactor_ + 1.0);
 
    // Calculate output layer gradients
@@ -68,8 +68,8 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
 
    // Calculate hidden layer gradients
    for (unsigned layerNum = layers_.size() - 2; layerNum > 0; --layerNum) {
-      Neuron::Layer &hiddenLayer = layers_[layerNum];
-      Neuron::Layer &nextLayer = layers_[layerNum + 1];
+      nndef::neurons_layer_t &hiddenLayer = layers_[layerNum];
+      nndef::neurons_layer_t &nextLayer = layers_[layerNum + 1];
 
       for (unsigned n = 0; n < hiddenLayer.size(); ++n) {
          hiddenLayer[n].calcHiddenGradients(nextLayer);
@@ -78,8 +78,8 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
    // For all layers from outputs to first hidden layer,
    // update connection weights
    for (auto layerNum = layers_.size() - 1; layerNum > 0; --layerNum) {
-      Neuron::Layer &layer = layers_[layerNum];
-      Neuron::Layer &prevLayer = layers_[layerNum - 1];
+      nndef::neurons_layer_t &layer = layers_[layerNum];
+      nndef::neurons_layer_t &prevLayer = layers_[layerNum - 1];
       for (unsigned n = 0; n < layer.size() - 1; ++n) {
          layer[n].updateInputWeights(prevLayer);
       }
@@ -96,7 +96,7 @@ void Net::feedForward(const nndef::values_layer_t &inputVals)
    }
    // forward propagate
    for (unsigned layerNum = 1; layerNum < layers_.size(); ++layerNum) {
-      Neuron::Layer &prevLayer = layers_[layerNum - 1];
+      nndef::neurons_layer_t &prevLayer = layers_[layerNum - 1];
       for (unsigned n = 0; n < layers_[layerNum].size() - 1; ++n) {
          layers_[layerNum][n].feedForward(prevLayer);
       }

@@ -9,8 +9,6 @@
 class Neuron
 {
 public:
-   using Layer = std::vector<Neuron>;
-
    Neuron(unsigned numOutputs, unsigned myIndex);
    ~Neuron() = default;
 

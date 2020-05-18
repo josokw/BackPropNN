@@ -1,4 +1,5 @@
 #include "Neuron.h"
+#include "NNdef.h"
 
 #include <cmath>
 
@@ -18,7 +19,7 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
    }
 }
 
-void Neuron::updateInputWeights(Neuron::Layer &prevLayer)
+void Neuron::updateInputWeights(nndef::neurons_layer_t &prevLayer)
 {
    // The weights to be updated are in the Connection container
    // in the neurons in the preceding layer
@@ -34,7 +35,7 @@ void Neuron::updateInputWeights(Neuron::Layer &prevLayer)
    }
 }
 
-double Neuron::sumDOW(const Neuron::Layer &nextLayer) const
+double Neuron::sumDOW(const nndef::neurons_layer_t &nextLayer) const
 {
    double sum = 0.0;
    // Sum our contributions of the errors at the nodes we feed.
@@ -45,7 +46,7 @@ double Neuron::sumDOW(const Neuron::Layer &nextLayer) const
    return sum;
 }
 
-void Neuron::calcHiddenGradients(const Neuron::Layer &nextLayer)
+void Neuron::calcHiddenGradients(const nndef::neurons_layer_t &nextLayer)
 {
    double dow = sumDOW(nextLayer);
    gradient_ = dow * Neuron::transferFunctionDerivative(outputVal_);
@@ -69,7 +70,7 @@ double Neuron::transferFunctionDerivative(double x)
    return 1.0 - tanh(x) * tanh(x);
 }
 
-void Neuron::feedForward(const Neuron::Layer &prevLayer)
+void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
 {
    double sum = 0.0;
  
