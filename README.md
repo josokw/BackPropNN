@@ -49,6 +49,8 @@ in: 1.0 1.0
 out: 0.0
 ```
 
+Avoid empty lines!
+
 Run the code for training a backprop NN:
 
 ```bash
