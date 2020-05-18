@@ -35,7 +35,7 @@ make
 
 A set of inputs for which the correct outputs are known, used to train the neural network.
 
-Training **XOR**:
+Training **XOR** (2 input neurons, 1 hidden layer 5 neurons, 1 output neuron):
 
 ```
 topology: 2 5 1
