@@ -10,6 +10,7 @@
 #include "TrainingData.h"
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 /// Back Propagating Neural Network
@@ -23,9 +24,17 @@ int main(int argc, char *argv[])
 
    std::cout << "*** " APPNAME_VERSION " started\n\n";
 
+   std::ifstream trainingDataStream{argv[1]};
+   if (not trainingDataStream) {
+      std::cerr << "ERROR: file " << argv[1] << " can not be opened\n";
+   }
+
    TrainingData trainData{argv[1]};
    auto topology{trainData.setTopology()};
    Net myNet{topology};
+
+   trainingDataStream >> trainData;
+   std::cout << trainData;
 
    NNtrainer nntr{myNet, trainData};
 
