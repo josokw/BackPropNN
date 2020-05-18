@@ -1,6 +1,8 @@
 #ifndef NEURON_H
 #define NEURON_H
 
+#include "NNdef.h"
+
 #include <cstdlib>
 #include <vector>
 
@@ -14,10 +16,10 @@ public:
 
    void setOutputVal(double val) { outputVal_ = val; }
    double getOutputVal(void) const { return outputVal_; }
-   void feedForward(const Neuron::Layer &prevLayer);
+   void feedForward(const nndef::neurons_layer_t &prevLayer);
    void calcOutputGradients(double targetVal);
-   void calcHiddenGradients(const Neuron::Layer &nextLayer);
-   void updateInputWeights(Neuron::Layer &prevLayer);
+   void calcHiddenGradients(const nndef::neurons_layer_t &nextLayer);
+   void updateInputWeights(nndef::neurons_layer_t &prevLayer);
 
 private:
    struct Connection {
@@ -31,7 +33,7 @@ private:
    static double transferFunctionDerivative(double x);
    static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
-   double sumDOW(const Neuron::Layer &nextLayer) const;
+   double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
    double outputVal_;
    std::vector<Connection> outputWeights_;
 

@@ -10,11 +10,9 @@ std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
       os << layerSize << ' ';
    }
    os << std::endl;
-   for (auto &io: trnData.in_out_all_)
-   {
+   for (auto &io : trnData.in_out_all_) {
       os << "in:";
-      for (auto x: io.first)
-      {
+      for (auto x : io.first) {
          os << " " << x;
       }
       os << std::endl;
@@ -53,7 +51,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
    }
 
    while (!is.eof()) {
-      TrainingData::in_out_pair_t iop;
+      nndef::in_out_pair_t iop;
 
       std::string line;
       getline(is, line);
@@ -160,4 +158,10 @@ unsigned TrainingData::getTargetOutputs(std::vector<double> &targetOutputVals)
       }
    }
    return targetOutputVals.size();
+}
+
+nndef::in_out_pair_t TrainingData::getRandomChoosenInOut() const
+{
+   int randomIndex = random() % in_out_all_.size();
+   return in_out_all_[randomIndex];
 }

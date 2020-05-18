@@ -1,4 +1,5 @@
 #include "Net.h"
+#include "NNdef.h"
 
 #include <cassert>
 #include <cmath>
@@ -7,7 +8,7 @@
 double Net::recentAverageSmoothingFactor_ =
    100.0; // Number of training samples to average over
 
-Net::Net(const std::vector<unsigned> &topology)
+Net::Net(const nndef::topology_t &topology)
    : topology_{topology}
    , layers_{}
    , error_{0.0}
@@ -16,7 +17,7 @@ Net::Net(const std::vector<unsigned> &topology)
    std::cout << "NN topology\n";
    auto numLayers = topology.size();
    for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
-      layers_.push_back(Neuron::Layer());
+      layers_.push_back(nndef::neurons_layer_t());
       unsigned numOutputs =
          (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
       // We have a new layer, now fill it with neurons, and
@@ -34,7 +35,7 @@ Net::Net(const std::vector<unsigned> &topology)
    }
 }
 
-void Net::getResults(std::vector<double> &resultVals) const
+void Net::getResults(nndef::values_layer_t &resultVals) const
 {
    resultVals.clear();
    for (unsigned n = 0; n < layers_.back().size() - 1; ++n) {
@@ -42,7 +43,7 @@ void Net::getResults(std::vector<double> &resultVals) const
    }
 }
 
-void Net::backProp(const std::vector<double> &targetVals)
+void Net::backProp(const nndef::values_layer_t &targetVals)
 {
    // Calculate overall net error (RMS of output neuron errors)
    Neuron::Layer &outputLayer = layers_.back();
@@ -84,7 +85,7 @@ void Net::backProp(const std::vector<double> &targetVals)
    }
 }
 
-void Net::feedForward(const std::vector<double> &inputVals)
+void Net::feedForward(const nndef::values_layer_t &inputVals)
 {
    assert(inputVals.size() == layers_[0].size() - 1);
 

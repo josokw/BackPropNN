@@ -9,7 +9,7 @@
          "type": "cppdbg",
          "request": "launch",
          "program": "${workspaceFolder}/src/backpropnn",
-         "args": ["../data/XOR/txor.txt"],
+         "args": ["../data/trainingXOR.txt"],
          "stopAtEntry": false,
          "cwd": "${workspaceFolder}/src",
          "environment": [],

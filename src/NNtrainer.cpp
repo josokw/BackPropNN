@@ -1,4 +1,5 @@
 #include "NNtrainer.h"
+#include "NNdef.h"
 #include "Net.h"
 #include "TrainingData.h"
 
@@ -14,10 +15,6 @@ NNtrainer::NNtrainer(Net &net, TrainingData &trainingData)
 
 void NNtrainer::train()
 {
-   Net::layer_t inputVals;
-   Net::layer_t targetVals;
-   Net::layer_t resultVals;
-
    auto showVectorVals = [](const std::string &label,
                             const std::vector<double> &v) {
       std::cout << label << " ";
@@ -27,25 +24,25 @@ void NNtrainer::train()
       std::cout << std::endl;
    };
 
-   while (!trainingData_.isEof()) {
+   while (trainingPass_ < 10000 && net_.getRecentAverageError() > 0.01) {
       ++trainingPass_;
-      // Get new input data and feed it forward:
-      if (trainingData_.getNextInputs(inputVals) != net_.topology()[0]) {
-         break;
-      }
-      std::cout << "\nPass " << trainingPass_;
+
+      nndef::values_layer_t resultVals;
+      const auto [inputVals, targetVals] = trainingData_.getRandomChoosenInOut();
+
+      std::cout << "\n-- Pass " << trainingPass_;
       showVectorVals(": Inputs:", inputVals);
       net_.feedForward(inputVals);
       // Collect the net's actual output results:
       net_.getResults(resultVals);
       showVectorVals("Outputs:", resultVals);
       // Train the net what the outputs should have been:
-      trainingData_.getTargetOutputs(targetVals);
       showVectorVals("Targets:", targetVals);
       assert(targetVals.size() == net_.topology().back());
       net_.backProp(targetVals);
 
-      // Report how well the training is working, average over recent samples:
+      // Report how well the training is working, average over recent
+      // samples:
       std::cout << "Net recent average error: " << net_.getRecentAverageError()
                 << std::endl;
    }

@@ -1,29 +1,28 @@
 #ifndef NET_H
 #define NET_H
 
+#include "NNdef.h"
 #include "Neuron.h"
 
 #include <vector>
 
 /// The class Net represents a layered neural network (NN).
-/// The NN is configured by the topology data.
+/// The NN is dynamically build by the topology data.
 class Net
 {
 public:
-   using layer_t = std::vector<double>;
-
-   Net(const std::vector<unsigned> &topology);
+   Net(const nndef::topology_t &topology);
    ~Net() = default;
 
    const auto &topology() const { return topology_; }
-   void feedForward(const layer_t &inputVals);
-   void backProp(const layer_t &targetVals);
-   void getResults(layer_t &resultVals) const;
+   void feedForward(const nndef::values_layer_t &inputVals);
+   void backProp(const nndef::values_layer_t &targetVals);
+   void getResults(nndef::values_layer_t &resultVals) const;
    double getRecentAverageError() const { return recentAverageError_; }
 
 private:
-   const std::vector<unsigned> &topology_;
-   std::vector<Neuron::Layer> layers_; // m_layers[layerNum][neuronNum]
+   const nndef::topology_t &topology_;
+   nndef::neurons_all_layers_t layers_; // m_layers[layerNum][neuronNum]
    double error_;
    double recentAverageError_;
    static double recentAverageSmoothingFactor_;
