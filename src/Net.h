@@ -21,7 +21,7 @@ public:
 
 private:
    const nndef::topology_t &topology_;
-   nndef::neurons_all_layers_t layers_; // m_layers[layerNum][neuronNum]
+   nndef::neurons_all_layers_t layers_; // layers_[layerNum][neuronNum]
    double RMSerror_;
    double recentAverageError_;
    static double recentAverageSmoothingFactor_;
