@@ -5,6 +5,7 @@
 #include "TrainingData.h"
 
 #include <cassert>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -20,7 +21,8 @@ void NNtrainer::train()
                             const std::vector<double> &v) {
       std::cout << label << " ";
       for (const auto e : v) {
-         std::cout << e << " ";
+         std::cout << std::setw(6) << std::fixed << std::setprecision(3) << e
+                   << " ";
       }
       std::cout << std::endl;
    };
@@ -34,7 +36,7 @@ void NNtrainer::train()
          trainingData_.getRandomChoosenInOut();
 
       std::cout << "\n-- Pass " << trainingPass_;
-      showVectorVals(": Inputs:", inputVals);
+      showVectorVals("\nInputs: ", inputVals);
       net_.feedForward(inputVals);
       // Collect the net's actual output results:
       net_.getResults(resultVals);
