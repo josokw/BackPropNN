@@ -14,7 +14,7 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
    , gradient_{0.0}
 {
    for (unsigned c = 0; c < numOutputs; ++c) {
-      outputWeights_.push_back(Connection());
+      outputWeights_.push_back(nndef::connection_t());
       outputWeights_.back().weight = randomWeight();
    }
 }
