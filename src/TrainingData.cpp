@@ -33,12 +33,19 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 {
    trnData.topology_.clear();
 
-   if (!is.eof()) {
+   auto ignoreWhiteSpace = [&is]() {
       std::string line;
-      getline(is, line);
-      // Remove trailing white spaces
-      line.erase(line.find_last_not_of(" \t") + 1);
-      std::stringstream lineStream1{line};
+      while (line.empty() && !is.eof()) {
+         getline(is, line);
+         // Remove trailing white spaces
+         line.erase(line.find_last_not_of(" \t") + 1);
+      }
+      return line;
+   };
+
+   if (!is.eof()) {
+      std::stringstream lineStream1{ignoreWhiteSpace()};
+
       std::string label;
       lineStream1 >> label;
 
@@ -53,12 +60,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 
    while (!is.eof()) {
       nndef::in_out_pair_t iop;
-
-      std::string line;
-      getline(is, line);
-      // Remove trailing white spaces
-      line.erase(line.find_last_not_of(" \t") + 1);
-      std::stringstream lineStream2{line};
+      std::stringstream lineStream2{ignoreWhiteSpace()};
       std::string label;
       lineStream2 >> label;
 
@@ -71,11 +73,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
          }
       }
 
-      getline(is, line);
-      // Remove trailing white spaces
-      line.erase(line.find_last_not_of(" \t") + 1);
-      std::stringstream lineStream3{line};
-      lineStream3 << line;
+      std::stringstream lineStream3{ignoreWhiteSpace()};
       lineStream3 >> label;
 
       if (label == "out:") {
@@ -85,8 +83,8 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
                iop.second.push_back(targetValue);
             }
          }
+          trnData.in_out_all_.push_back(iop);
       }
-      trnData.in_out_all_.push_back(iop);
    }
 
    return is;
