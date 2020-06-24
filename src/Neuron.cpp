@@ -1,11 +1,13 @@
 #include "Neuron.h"
 #include "NNdef.h"
+#include "NNconfig.h"
 
 #include <cmath>
 
-double Neuron::eta = 0.15; ///< Overall net learning rate, [0.0..1.0]
-double Neuron::alpha =
-   0.5; ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
+///< Overall net learning rate, [0.0..1.0]
+double Neuron::eta = ETA;
+///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
+double Neuron::alpha = ALFA;
 
 Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
    : outputVal_{0.0}
@@ -14,7 +16,7 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
    , gradient_{0.0}
 {
    for (unsigned c = 0; c < numOutputs; ++c) {
-      outputWeights_.push_back(Connection());
+      outputWeights_.push_back(nndef::connection_t());
       outputWeights_.back().weight = randomWeight();
    }
 }
@@ -73,7 +75,7 @@ double Neuron::transferFunctionDerivative(double x)
 void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
 {
    double sum = 0.0;
- 
+
    for (auto &neuron : prevLayer) {
       sum += neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight;
    }

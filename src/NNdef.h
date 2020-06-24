@@ -8,8 +8,12 @@ class Neuron;
 /// Shared neural network NN definitions.
 namespace nndef {
 
-using topology_t = std::vector<unsigned>;
+using connection_t = struct connection {
+   double weight;
+   double deltaWeight;
+};
 
+using topology_t = std::vector<unsigned>;
 using neurons_layer_t = std::vector<Neuron>;
 using neurons_all_layers_t = std::vector<nndef::neurons_layer_t>;
 

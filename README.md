@@ -25,6 +25,15 @@ Goal of this project: refactoring the David Miller example code to Modern C++. S
 
 The C++ code is compilable by **g++ v9.3.0**.
 
+Install g++ on Ubuntu 18.04:
+
+```
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt update
+sudo apt install gcc-9 g++-9
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+```
+
 Go to the *src* directory and type:
 
 ```bash

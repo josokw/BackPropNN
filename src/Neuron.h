@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <vector>
 
+/// The class Neuron represents a neuron, every nueron has an index myIndex and
+/// has a number of outputs.
 class Neuron
 {
 public:
@@ -22,22 +24,21 @@ public:
    void updateInputWeights(nndef::neurons_layer_t &prevLayer);
 
 private:
-   struct Connection {
-      double weight;
-      double deltaWeight;
-   };
    /// [0.0..1.0] overall net training rate.
    static double eta;
-   // [0.0..n] multiplier of last weight change (momentum)
-   static double alpha; 
+   // [0.0..n] multiplier of last weight change (momentum).
+   static double alpha;
 
+   /// Hyperbolic tangent activation function.
    static double transferFunction(double x);
+   /// Hyperbolic tangent activation derivative function.
    static double transferFunctionDerivative(double x);
+   /// For initialisation of the weigths.
    static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
    double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
    double outputVal_;
-   std::vector<Connection> outputWeights_;
+   std::vector<nndef::connection_t> outputWeights_;
 
    size_t myIndex_;
    double gradient_;
