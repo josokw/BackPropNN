@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <vector>
 
-/// The class Neuron represents a neuron, every nueron has an index myIndex and
+/// The class Neuron represents a neuron, every neuron has an index myIndex and
 /// has a number of outputs.
 class Neuron
 {
