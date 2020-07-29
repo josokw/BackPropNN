@@ -49,19 +49,26 @@ Training **XOR**, topology:
 - 1 hidden layer 5 neurons
 - 1 output neuron
 
+Empty lines and single line comments after **#** are allowed.
+
 ```
+# trainingXOR.txt
 topology: 2 5 1
+
 in: 0.0 0.0
 out: 0.0
+
 in: 1.0 0.0
 out: 1.0
+
 in: 0.0 1.0
 out: 1.0
+
 in: 1.0 1.0
 out: 0.0
 ```
 
-Run the code for training a backprop NN:
+Run the code for training XOR:
 
 ```bash
 ./backpropnn ../data/trainingXOR.txt

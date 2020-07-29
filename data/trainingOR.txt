@@ -1,3 +1,4 @@
+# trainingOR.txt
 topology: 2 5 1
 
 in: 0.0 0.0

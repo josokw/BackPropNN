@@ -33,10 +33,14 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 {
    trnData.topology_.clear();
 
-   auto ignoreWhiteSpace = [&is]() {
+   auto ignoreCommentWhiteSpace = [&is]() {
       std::string line;
       while (line.empty() && !is.eof()) {
          getline(is, line);
+         // Remove single line comment after #
+         if (auto pos = line.find('#'); pos != std::string::npos) {
+            line.erase(pos);
+         }
          // Remove trailing white spaces
          line.erase(line.find_last_not_of(" \t") + 1);
       }
@@ -44,7 +48,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
    };
 
    if (!is.eof()) {
-      std::stringstream lineStream1{ignoreWhiteSpace()};
+      std::stringstream lineStream1{ignoreCommentWhiteSpace()};
 
       std::string label;
       lineStream1 >> label;
@@ -60,7 +64,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 
    while (!is.eof()) {
       nndef::in_out_pair_t iop;
-      std::stringstream lineStream2{ignoreWhiteSpace()};
+      std::stringstream lineStream2{ignoreCommentWhiteSpace()};
       std::string label;
       lineStream2 >> label;
 
@@ -73,7 +77,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
          }
       }
 
-      std::stringstream lineStream3{ignoreWhiteSpace()};
+      std::stringstream lineStream3{ignoreCommentWhiteSpace()};
       lineStream3 >> label;
 
       if (label == "out:") {
@@ -83,7 +87,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
                iop.second.push_back(targetValue);
             }
          }
-          trnData.in_out_all_.push_back(iop);
+         trnData.in_out_all_.push_back(iop);
       }
    }
 
