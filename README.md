@@ -6,9 +6,9 @@
 
 - **Activation function** example: non-linear **Hyperbolic Tangent**, zero centered making it easier to model inputs that have strongly negative, neutral, and strongly positive values. See [Seven types of activation functions](https://missinglink.ai/guides/neural-network-concepts/7-types-neural-network-activation-functions-right/).
   
-## Simulation   
-Training sets: XOR, OR , AND and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
+## Simulation
 
+Training sets: XOR, OR , AND and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
 
 ## Refactoring to Modern C++
 
@@ -19,15 +19,13 @@ Goal of this project: refactoring the David Miller example code to Modern C++. S
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cd688b1e3984f63b00fdee04e7dac4b)](https://www.codacy.com/project/josokw/BackPropNN/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/BackPropNN&amp;utm_campaign=Badge_Grade_Dashboard)
 [![CodeFactor](https://www.codefactor.io/repository/github/josokw/backpropnn/badge)](https://www.codefactor.io/repository/github/josokw/backpropnn)
 
-
-
 ## Compiling
 
 The C++ code is compilable by **g++ v9.3.0**.
 
 Install g++ on Ubuntu 18.04:
 
-```
+```bash
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test
 sudo apt update
 sudo apt install gcc-9 g++-9
@@ -45,13 +43,14 @@ make
 A set of inputs for which the correct outputs are known, used to train the neural network.
 
 Training **XOR**, topology:
+
 - 2 input neurons
 - 1 hidden layer 5 neurons
 - 1 output neuron
 
 Empty lines and single line comments after **#** are allowed.
 
-```
+```txt
 # trainingXOR.txt
 topology: 2 5 1
 
