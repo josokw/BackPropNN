@@ -8,7 +8,7 @@
   
 ## Simulation
 
-Training sets: XOR, OR , AND and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
+Training sets: XOR, OR, AND, AND3, and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
 
 ## Refactoring to Modern C++
 
