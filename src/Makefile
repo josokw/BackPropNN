@@ -1,11 +1,11 @@
 CXX = g++ 
-CXXFLAGS = -std=c++2a -g -Wall -Wextra -Weffc++ -Wpedantic \
+CXXFLAGS = -std=c++20 -g -Wall -Wextra -Weffc++ -Wpedantic \
            -Wold-style-cast -Winit-self -Wno-unused -Wshadow \
            -Wno-parentheses -Wlogical-op -Wredundant-decls \
            -Wcast-align -Wsign-promo -Wmissing-include-dirs \
            -Woverloaded-virtual -Wctor-dtor-privacy
 
-EXECUTABLE = backpropnn
+EXECUTABLE = ../bin/backpropnn
 SOURCES = ${wildcard *.cpp}
 HEADERS = ${wildcard *.h}
 OBJECTS = ${SOURCES:.cpp=.o}

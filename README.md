@@ -8,7 +8,7 @@
   
 ## Simulation
 
-Training sets: XOR, OR , AND and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
+Training sets: XOR, OR, AND and NAND. See [Simulation training backprop NN](http://www.emergentmind.com/neural-network).
 
 ## Refactoring to Modern C++
 
@@ -21,24 +21,15 @@ Goal of this project: refactoring the David Miller example code to Modern C++. S
 
 ## Compiling
 
-The C++ code is compilable by **g++ v9.3.0**.
-
-Install g++ on Ubuntu 18.04:
-
-```bash
-sudo add-apt-repository ppa:ubuntu-toolchain-r/test
-sudo apt update
-sudo apt install gcc-9 g++-9
-sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
-```
+The C++ code is compilable by **g++20**
 
 Go to the *src* directory and type:
 
 ```bash
-make
+make -j
 ```
 
-## Running: training a BackProp NN
+## Running and training a BackProp NN
 
 A set of inputs for which the correct outputs are known, used to train the neural network.
 
@@ -50,8 +41,14 @@ Training **XOR**, topology:
 
 Empty lines and single line comments after **#** are allowed.
 
+The training parameters *momentum* and *learning_rate* are optional.
+If not used default values are used.
+
 ```txt
 # trainingXOR.txt
+
+momentum: 0.5
+learning_rate: 0.15
 topology: 2 5 1
 
 in: 0.0 0.0
@@ -67,7 +64,7 @@ in: 1.0 1.0
 out: 0.0
 ```
 
-Run the code for training XOR:
+Run the code for training XOR in the *bin* directory:
 
 ```bash
 ./backpropnn ../data/trainingXOR.txt

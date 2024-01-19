@@ -1,4 +1,5 @@
 #include "TrainingData.h"
+#include "NNconfig.h"
 
 #include <iostream>
 #include <sstream>
@@ -6,24 +7,25 @@
 
 std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
 {
+   os << "momentum (ALFA): " << ALFA << "\n";
+   os << "learning rate (ETA): " << ETA << "\n";
    os << "topology: ";
    for (auto layerSize : trnData.topology_) {
       os << layerSize << ' ';
    }
-   os << std::endl;
+   os << "\n";
    for (auto &io : trnData.in_out_all_) {
       os << "in:";
       for (auto x : io.first) {
          os << " " << x;
       }
-      os << std::endl;
+      os << "\n";
       os << "out:";
       for (auto x : io.second) {
          os << " " << x;
       }
-      os << std::endl;
+      os << "\n";
    }
-
    os << std::endl;
 
    return os;
@@ -47,11 +49,27 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
       return line;
    };
 
-   if (!is.eof()) {
+   while (!is.eof()) {
       std::stringstream lineStream1{ignoreCommentWhiteSpace()};
 
       std::string label;
       lineStream1 >> label;
+
+      if (label == "momentum:" or label == "ALFA:") {
+         std::cout << "label = " << label << std::endl;
+         while (!lineStream1.eof()) {
+            lineStream1 >> ALFA;
+         }
+      }
+      std::cout << "ALFA = " << ALFA << std::endl;
+
+      if (label == "learning_rate:" or label == "ETA") {
+         std::cout << "label = " << label << std::endl;
+         while (!lineStream1.eof()) {
+            lineStream1 >> ETA;
+         }
+      }
+      std::cout << "ETA = " << ETA << std::endl;
 
       if (label == "topology:") {
          while (!lineStream1.eof()) {
@@ -59,6 +77,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
             lineStream1 >> n;
             trnData.topology_.push_back(n);
          }
+         break;
       }
    }
 
