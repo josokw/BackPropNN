@@ -1,0 +1,60 @@
+# training3x3.txt
+
+momentum: 0.5
+learning_rate: 0.15
+topology: 9 4 6 4 4
+
+# solid
+in: 0.0 0.0 0.0  0.0 0.0 0.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 1.0   0.0      0.0      0.0
+
+# solid
+in: 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0
+#    solid vertical diagonal horizontal
+out: 1.0   0.0      0.0      0.0
+
+# vertical
+in: 1.0 0.0 0.0  1.0 0.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   1.0      0.0      0.0
+
+# vertical
+in: 0.0 1.0 0.0  0.0 1.0 0.0  0.0 1.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   1.0      0.0      0.0
+
+# vertical
+in: 0.0 0.0 1.0  0.0 0.0 1.0  0.0 0.0 1.0
+#    solid vertical diagonal horizontal
+out: 0.0   1.0      0.0      0.0
+
+# diagonal
+in: 0.0 0.0 1.0  0.0 1.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      1.0      0.0
+
+# diagonal
+in: 1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      1.0      0.0
+
+# diagonal
+in: 0.0 0.0 1.0  0.0 1.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      1.0      0.0
+
+# horizontal
+in: 0.0 0.0 0.0  0.0 0.0 0.0  1.0 1.0 1.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      0.0      1.0
+
+# horizontal
+in: 0.0 0.0 0.0  1.0 1.0 1.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      0.0      1.0
+
+# horizontal
+in: 1.0 1.0 1.0  0.0 0.0 0.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal
+out: 0.0   0.0      0.0      1.0
