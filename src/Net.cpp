@@ -23,7 +23,7 @@ Net::Net(const nndef::topology_t &topology)
          (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
       // We have a new layer, now fill it with neurons, and
       // add a bias neuron in each layer.
-      std::cout << "Layer " << layerNum + 1 << " neurons + bias neuron ";
+      std::cout << "Layer " << layerNum + 1 << " neurons + bias neuron: ";
       for (unsigned neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
          layers_.back().push_back(Neuron{numOutputs, neuronNum});

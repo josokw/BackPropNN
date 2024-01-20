@@ -2,7 +2,7 @@
 #define NNCONFIG_H
 
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
-inline double ALFA = 0.5;
+inline double ALPHA = 0.5;
 ///< Overall net learning rate, [0.0..1.0]
 inline double ETA = 0.15;
 

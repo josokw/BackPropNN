@@ -7,7 +7,7 @@
 ///< Overall net learning rate, [0.0..1.0]
 double Neuron::eta = ETA;
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
-double Neuron::alpha = ALFA;
+double Neuron::alpha = ALPHA;
 
 Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
    : outputVal_{0.0}

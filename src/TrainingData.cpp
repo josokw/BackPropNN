@@ -7,7 +7,7 @@
 
 std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
 {
-   os << "momentum (ALFA): " << ALFA << "\n";
+   os << "momentum (ALPHA): " << ALPHA << "\n";
    os << "learning rate (ETA): " << ETA << "\n";
    os << "topology: ";
    for (auto layerSize : trnData.topology_) {
@@ -55,21 +55,17 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
       std::string label;
       lineStream1 >> label;
 
-      if (label == "momentum:" or label == "ALFA:") {
-         std::cout << "label = " << label << std::endl;
+      if (label == "momentum:" or label == "ALPHA:") {
          while (!lineStream1.eof()) {
-            lineStream1 >> ALFA;
+            lineStream1 >> ALPHA;
          }
       }
-      std::cout << "ALFA = " << ALFA << std::endl;
 
       if (label == "learning_rate:" or label == "ETA") {
-         std::cout << "label = " << label << std::endl;
          while (!lineStream1.eof()) {
             lineStream1 >> ETA;
          }
       }
-      std::cout << "ETA = " << ETA << std::endl;
 
       if (label == "topology:") {
          while (!lineStream1.eof()) {
