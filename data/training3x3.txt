@@ -5,8 +5,8 @@
 momentum: 0.5
 learning_rate: 0.15
 
-topology: 9    4    6    4    4
-actionfs: tanh tanh tanh tanh relu
+topology: 9    4    6    4
+actionfs: tanh tanh tanh sigmoid
 
 # solid
 in: 0.0 0.0 0.0  0.0 0.0 0.0  0.0 0.0 0.0
