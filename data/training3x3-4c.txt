@@ -1,6 +1,6 @@
-# training3x3.txt
+# training3x3-4c.txt
 
-# NN for classification: solid vertical diagonal horizontal
+# NN for classification (4): solid vertical diagonal horizontal
 
 momentum: 0.5
 learning_rate: 0.15

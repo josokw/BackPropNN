@@ -1,0 +1,69 @@
+# training3x3-5c.txt
+
+# NN for classification (5): solid vertical diagonal horizontal X
+
+momentum: 0.5
+learning_rate: 0.15
+
+topology: 9    4    9          6    5
+actionfs: tanh tanh leaky_relu tanh leaky_relu
+
+# solid
+in: 0.0 0.0 0.0  0.0 0.0 0.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 1.0   0.0      0.0      0.0        0.0
+
+# solid
+in: 1.0 1.0 1.0  1.0 1.0 1.0  1.0 1.0 1.0
+#    solid vertical diagonal horizontal X
+out: 1.0   0.0      0.0      0.0        0.0
+
+# vertical
+in: 1.0 0.0 0.0  1.0 0.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   1.0      0.0      0.0        0.0
+
+# vertical
+in: 0.0 1.0 0.0  0.0 1.0 0.0  0.0 1.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   1.0      0.0      0.0        0.0
+
+# vertical
+in: 0.0 0.0 1.0  0.0 0.0 1.0  0.0 0.0 1.0
+#    solid vertical diagonal horizontal X
+out: 0.0   1.0      0.0      0.0        0.0
+
+# diagonal
+in: 0.0 0.0 1.0  0.0 1.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      1.0      0.0        0.0
+
+# diagonal
+in: 1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      1.0      0.0        0.0
+
+# diagonal
+in: 0.0 0.0 1.0  0.0 1.0 0.0  1.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      1.0      0.0        0.0
+
+# horizontal
+in: 0.0 0.0 0.0  0.0 0.0 0.0  1.0 1.0 1.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      0.0      1.0        0.0
+
+# horizontal
+in: 0.0 0.0 0.0  1.0 1.0 1.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      0.0      1.0        0.0
+
+# horizontal
+in: 1.0 1.0 1.0  0.0 0.0 0.0  0.0 0.0 0.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      0.0      1.0        0.0
+
+# X
+in: 1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0
+#    solid vertical diagonal horizontal X
+out: 0.0   0.0      0.0      0.0        1.0

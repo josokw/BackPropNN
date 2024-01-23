@@ -35,20 +35,32 @@ void NNtrainer::train()
       const auto [inputVals, targetVals] =
          trainingData_.getRandomChoosenInOut();
 
-      std::cout << "\n-- Pass " << trainingPass_;
-      showVectorVals("\nInputs: ", inputVals);
+      if (do_show(trainingPass_, net_.getRecentAverageError())) {
+         std::cout << "\n-- Pass " << trainingPass_;
+         showVectorVals("\nInputs: ", inputVals);
+      }
+
       net_.feedForward(inputVals);
       // Collect the net's actual output results:
       net_.getResults(resultVals);
-      showVectorVals("Outputs:", resultVals);
-      // Train the net what the outputs should have been:
-      showVectorVals("Targets:", targetVals);
-      assert(targetVals.size() == net_.topology().back());
-      net_.backProp(targetVals);
 
-      // Report how well the training is working, average over recent
-      // samples:
-      std::cout << "Net recent average error: " << net_.getRecentAverageError()
-                << std::endl;
+      if (do_show(trainingPass_, net_.getRecentAverageError())) {
+         showVectorVals("Outputs:", resultVals);
+         // Train the net what the outputs should have been:
+         showVectorVals("Targets:", targetVals);
+         assert(targetVals.size() == net_.topology().back());
+      }
+
+      /// @todo Check call to net_.backProp(targetVals);
+      // net_.backProp(targetVals);
+
+      if (do_show(trainingPass_, net_.getRecentAverageError())) {
+         // Report how well the training is working, average over recent
+         // samples:
+         std::cout << "Net recent average error: "
+                   << net_.getRecentAverageError() << std::endl;
+      }
+
+      net_.backProp(targetVals);
    }
 }
