@@ -16,7 +16,7 @@ public:
 private:
    Net &net_;
    TrainingData &trainingData_;
-   int trainingPass_{0};
+   unsigned long trainingPass_{0UL};
 };
 
 #endif

@@ -9,18 +9,19 @@ std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
 {
    os << "momentum (ALPHA): " << ALPHA << "\n";
    os << "learning rate (ETA): " << ETA << "\n";
-   os << "topology: ";
-   for (auto layerSize : trnData.topology_) {
-      os << layerSize << ' ';
+   os << "topology: \n";
+   for (int index = 0; auto layerSize : trnData.topology_) {
+      os << "  " << layerSize << "  " << trnData.action_function_names_[index++]
+         << "\n";
    }
    os << "\n";
+
    for (auto &io : trnData.in_out_all_) {
       os << "in:";
       for (auto x : io.first) {
          os << " " << x;
       }
-      os << "\n";
-      os << "out:";
+      os << "\nout:";
       for (auto x : io.second) {
          os << " " << x;
       }
@@ -73,6 +74,13 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
             lineStream1 >> n;
             trnData.topology_.push_back(n);
          }
+      }
+      if (label == "actionfs:") {
+         while (!lineStream1.eof()) {
+            std::string af_name;
+            lineStream1 >> af_name;
+            trnData.action_function_names_.push_back(af_name);
+         }
          break;
       }
    }
@@ -111,6 +119,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 
 TrainingData::TrainingData()
    : topology_{}
+   , action_function_names_{}
    , in_out_all_{}
 {
 }

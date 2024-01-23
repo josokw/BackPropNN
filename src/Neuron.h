@@ -1,17 +1,21 @@
 #ifndef NEURON_H
 #define NEURON_H
 
+#include "ActivationFunctions.h"
 #include "NNdef.h"
 
 #include <cstdlib>
+#include <string>
 #include <vector>
 
-/// The class Neuron represents a neuron, every neuron has an index myIndex and
-/// has a number of outputs.
+/// The class Neuron represents a neuron, every neuron has an index myIndex,
+/// a number of outputs, a reference to a chosen activation function and it's
+/// derivative.
 class Neuron
 {
 public:
-   Neuron(unsigned numOutputs, unsigned myIndex);
+   Neuron(unsigned numOutputs, unsigned myIndex,
+          const std::string &action_function_name = "tanh");
    ~Neuron() = default;
 
    void setOutputVal(double val) { outputVal_ = val; }
@@ -29,11 +33,11 @@ private:
    // [0.0..n] multiplier of last weight change (momentum).
    static double alpha;
 
-   /// Hyperbolic tangent activation function.
-   static double transferFunction(double x);
-   /// Hyperbolic tangent activation derivative function.
-   static double transferFunctionDerivative(double x);
-   /// For initialisation of the weigths.
+   /// Activation function.
+   double activationFunction(double z);
+   /// Activation derivative function.
+   double activationFunctionDerivative(double z);
+   /// For randomly initialisation of the weigths.
    static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
    double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
@@ -42,6 +46,8 @@ private:
 
    size_t myIndex_;
    double gradient_;
+   nndef::action_function_t &af_;
+   nndef::action_function_t &af_derivative_;
 };
 
 #endif // NEURON_H

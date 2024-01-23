@@ -1,8 +1,12 @@
 # training3x3.txt
 
+# NN for classification: solid vertical diagonal horizontal
+
 momentum: 0.5
 learning_rate: 0.15
-topology: 9 4 6 4 4
+
+topology: 9    4    6    4    4
+actionfs: tanh tanh tanh tanh relu
 
 # solid
 in: 0.0 0.0 0.0  0.0 0.0 0.0  0.0 0.0 0.0

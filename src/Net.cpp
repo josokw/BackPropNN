@@ -9,8 +9,10 @@
 double Net::recentAverageSmoothingFactor_ =
    100.0; // Number of training samples to average over
 
-Net::Net(const nndef::topology_t &topology)
+Net::Net(const nndef::topology_t &topology,
+         const nndef::action_function_names_t &action_function_names)
    : topology_{topology}
+   , action_function_names_{action_function_names}
    , layers_{}
    , RMSerror_{0.0}
    , recentAverageError_{0.5}
@@ -26,7 +28,8 @@ Net::Net(const nndef::topology_t &topology)
       std::cout << "Layer " << layerNum + 1 << " neurons + bias neuron: ";
       for (unsigned neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
-         layers_.back().push_back(Neuron{numOutputs, neuronNum});
+         layers_.back().push_back(
+            Neuron{numOutputs, neuronNum, action_function_names_[layerNum]});
          std::cout << '.';
       }
       std::cout << std::endl;

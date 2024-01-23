@@ -1,5 +1,10 @@
 # trainingData.txt
-topology: 3 5 1
+
+momentum: 0.5
+learning_rate: 0.15
+
+topology: 3    5    1
+actionfs: tanh tanh tanh
 
 in: 1.0 0.0 0.0
 out: 0.1

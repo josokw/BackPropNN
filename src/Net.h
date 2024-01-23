@@ -6,11 +6,12 @@
 
 /// The class Net represents a layered neural network (NN).
 /// Layers: 1 input layer, >=1 hidden layers, 1 output layer.
-/// The NN is dynamically build by the topology data.
+/// The NN is dynamically build by the topology and action function names data.
 class Net
 {
 public:
-   Net(const nndef::topology_t &topology);
+   Net(const nndef::topology_t &topology,
+       const nndef::action_function_names_t &action_function_names);
    ~Net() = default;
 
    const auto &topology() const { return topology_; }
@@ -21,6 +22,7 @@ public:
 
 private:
    const nndef::topology_t &topology_;
+   const nndef::action_function_names_t &action_function_names_;
    nndef::neurons_all_layers_t layers_; // layers_[layerNum][neuronNum]
    double RMSerror_;
    double recentAverageError_;

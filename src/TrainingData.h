@@ -16,10 +16,12 @@ public:
    ~TrainingData() = default;
 
    const nndef::topology_t &getTopology() const { return topology_; }
+   const nndef::action_function_names_t &getActionFunctionNames() const { return action_function_names_; }
    nndef::in_out_pair_t getRandomChoosenInOut() const;
 
 private:
    nndef::topology_t topology_;
+   nndef::action_function_names_t action_function_names_;
    nndef::in_out_all_pairs_t in_out_all_;
 };
 

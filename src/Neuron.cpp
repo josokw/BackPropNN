@@ -1,6 +1,7 @@
 #include "Neuron.h"
 #include "NNdef.h"
 #include "NNconfig.h"
+#include "ActivationFunctions.h"
 
 #include <cmath>
 
@@ -9,11 +10,13 @@ double Neuron::eta = ETA;
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
 double Neuron::alpha = ALPHA;
 
-Neuron::Neuron(unsigned numOutputs, unsigned myIndex)
+Neuron::Neuron(unsigned numOutputs, unsigned myIndex, const std::string& action_function_name)
    : outputVal_{0.0}
    , outputWeights_{}
    , myIndex_{myIndex}
    , gradient_{0.0}
+   , af_{nn::act_fs[action_function_name].first}
+   , af_derivative_{nn::act_fs[action_function_name].second}
 {
    for (unsigned c = 0; c < numOutputs; ++c) {
       outputWeights_.push_back(nndef::connection_t());
@@ -51,25 +54,23 @@ double Neuron::sumDOW(const nndef::neurons_layer_t &nextLayer) const
 void Neuron::calcHiddenGradients(const nndef::neurons_layer_t &nextLayer)
 {
    double dow = sumDOW(nextLayer);
-   gradient_ = dow * Neuron::transferFunctionDerivative(outputVal_);
+   gradient_ = dow * Neuron::activationFunctionDerivative(outputVal_);
 }
 
 void Neuron::calcOutputGradients(double targetVal)
 {
    double delta = targetVal - outputVal_;
-   gradient_ = delta * Neuron::transferFunctionDerivative(outputVal_);
+   gradient_ = delta * Neuron::activationFunctionDerivative(outputVal_);
 }
 
-double Neuron::transferFunction(double x)
+double Neuron::activationFunction(double z)
 {
-   // tanh - output range [-1.0..1.0]
-   return tanh(x);
+   return af_(z);
 }
 
-double Neuron::transferFunctionDerivative(double x)
+double Neuron::activationFunctionDerivative(double z)
 {
-   // tanh derivative
-   return 1.0 - tanh(x) * tanh(x);
+   return af_derivative_(z);
 }
 
 void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
@@ -79,5 +80,5 @@ void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
    for (auto &neuron : prevLayer) {
       sum += neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight;
    }
-   outputVal_ = Neuron::transferFunction(sum);
+   outputVal_ = Neuron::activationFunction(sum);
 }

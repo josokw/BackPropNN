@@ -1,4 +1,4 @@
-// Refactored by Jos Onokiewicz
+// Refactored and extended by Jos Onokiewicz
 //
 // David Miller, http://millermattson.com/dave
 // See the associated video for instructions: http://vimeo.com/19569529
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
    trainingDataStream >> trainData;
    std::cout << trainData;
 
-   Net myNet{trainData.getTopology()};
+   Net myNet{trainData.getTopology(), trainData.getActionFunctionNames()};
    NNtrainer nntr{myNet, trainData};
 
    nntr.train();
