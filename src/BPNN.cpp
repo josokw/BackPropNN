@@ -21,13 +21,15 @@ int main(int argc, char *argv[])
       exit(1);
    }
 
-   std::cout << "*** " APPNAME_VERSION " started\n\n";
+   std::cout << "*** " APPNAME_VERSION " started\n";
 
    std::ifstream trainingDataStream{argv[1]};
    if (not trainingDataStream) {
       std::cerr << "ERROR: file " << argv[1] << " can not be opened\n";
       exit(EXIT_FAILURE);
    }
+
+   std::cout << "*** config file: " << argv[1] << "\n\n";
 
    TrainingData trainData;
 
