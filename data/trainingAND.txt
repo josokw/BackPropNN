@@ -3,8 +3,8 @@
 momentum: 0.4
 learning_rate: 0.15
 
-topology: 2    5    1
-actionfs: tanh tanh tanh
+topology: 2      5    1
+actionfs: inputs tanh tanh
 
 in: 0.0 0.0
 out: 0.0

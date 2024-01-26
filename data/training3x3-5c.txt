@@ -5,8 +5,8 @@
 momentum: 0.5
 learning_rate: 0.15
 
-topology: 9    4    9          6    5
-actionfs: tanh tanh leaky_relu tanh leaky_relu
+topology: 9       4    9    6    5
+actionfs: inputs  tanh tanh tanh leaky_relu
 
 # solid
 in: 0.0 0.0 0.0  0.0 0.0 0.0  0.0 0.0 0.0
