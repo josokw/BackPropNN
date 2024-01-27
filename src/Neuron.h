@@ -37,7 +37,7 @@ private:
    double activationFunction(double z);
    /// Activation derivative function.
    double activationFunctionDerivative(double z);
-   /// For randomly initialisation of the weigths.
+   /// For randomly initialisation of the weigths. Seed == 1;
    static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
    double sumDOW(const nndef::neurons_layer_t &nextLayer) const;

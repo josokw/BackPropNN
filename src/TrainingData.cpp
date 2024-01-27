@@ -126,6 +126,6 @@ TrainingData::TrainingData()
 
 nndef::in_out_pair_t TrainingData::getRandomChoosenInOut() const
 {
-   auto randomIndex = random() % in_out_all_.size();
+   auto randomIndex = std::rand() % in_out_all_.size();
    return in_out_all_[randomIndex];
 }
