@@ -21,11 +21,12 @@ Goal of this project: refactoring the David Miller example code to Modern C++. S
 
 ## Compiling
 
-The C++ code is compilable by **g++20**
+The C++ code needs **c++20**.
 
-Go to the *src* directory and type:
+Go to the *build* directory and type:
 
 ```bash
+cmake ..
 make -j
 ```
 
@@ -35,7 +36,7 @@ A set of inputs for which the correct outputs are known, used to train the neura
 
 Training **XOR**, topology:
 
-- 2 input neurons
+- 2 inputs
 - 1 hidden layer 5 neurons
 - 1 output neuron
 
@@ -49,7 +50,9 @@ If not used default values are used.
 
 momentum: 0.5
 learning_rate: 0.15
-topology: 2 5 1
+
+topology: 2      5    1
+actionfs: inputs tanh tanh
 
 in: 0.0 0.0
 out: 0.0
