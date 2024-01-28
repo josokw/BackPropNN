@@ -31,15 +31,23 @@ int main(int argc, char *argv[])
 
    std::cout << "*** config file: " << argv[1] << "\n\n";
 
-   TrainingData trainData;
+   try {
+      TrainingData trainData;
 
-   trainingDataStream >> trainData;
-   std::cout << trainData;
+      trainingDataStream >> trainData;
+      std::cout << trainData;
 
-   Net myNet{trainData.getTopology(), trainData.getActionFunctionNames()};
-   NNtrainer nntr{myNet, trainData};
+      Net myNet{trainData.getTopology(), trainData.getActionFunctionNames()};
+      NNtrainer nntr{myNet, trainData};
 
-   nntr.train();
+      nntr.train();
+   }
+   catch (std::exception &e) {
+      std::cerr << "ERROR: " << e.what() << "\n";
+   }
+   catch (...) {
+      std::cerr << "ERROR: unknown exception\n";
+   }
 
    std::cout << "\n*** " APPNAME_VERSION " ready\n\n";
 
