@@ -13,6 +13,8 @@
 /// derivative.
 class Neuron
 {
+   friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
+
 public:
    Neuron(unsigned numOutputs, unsigned myIndex,
           const std::string &action_function_name = "tanh");

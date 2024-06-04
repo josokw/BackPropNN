@@ -1,16 +1,37 @@
 #include "Neuron.h"
-#include "NNdef.h"
-#include "NNconfig.h"
 #include "ActivationFunctions.h"
+#include "NNconfig.h"
+#include "NNdef.h"
+#include "OSstate.h"
 
 #include <cmath>
+#include <iomanip>
+#include <iostream>
+
+std::ostream &operator<<(std::ostream &os, const Neuron &neuron)
+{
+   OSstate state{os};
+   os << "Neuron[" << neuron.myIndex_ << "]  out=" << std::showpos
+      << std::setw(6) << std::fixed << std::setprecision(3)
+      << neuron.outputVal_;
+   if (!neuron.outputWeights_.empty()) {
+      os << "  weights=[ ";
+      for (const auto &w : neuron.outputWeights_) {
+         os << std::setw(6) << std::fixed << std::setprecision(3) << w.weight
+            << " ";
+      }
+      os << "]";
+   }
+   return os;
+}
 
 ///< Overall net learning rate, [0.0..1.0]
 double Neuron::eta = ETA;
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
 double Neuron::alpha = ALPHA;
 
-Neuron::Neuron(unsigned numOutputs, unsigned myIndex, const std::string& action_function_name)
+Neuron::Neuron(unsigned numOutputs, unsigned myIndex,
+               const std::string &action_function_name)
    : outputVal_{0.0}
    , outputWeights_{}
    , myIndex_{myIndex}

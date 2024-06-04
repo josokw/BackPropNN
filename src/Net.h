@@ -9,6 +9,8 @@
 /// The NN is dynamically build by the topology and action function names data.
 class Net
 {
+   friend std::ostream &operator<<(std::ostream &os, const Net &net);
+
 public:
    Net(const nndef::topology_t &topology,
        const nndef::action_function_names_t &action_function_names);

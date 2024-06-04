@@ -38,6 +38,7 @@ void NNtrainer::train()
       if (do_show(trainingPass_, net_.getRecentAverageError())) {
          std::cout << "\n-- Pass " << trainingPass_;
          showVectorVals("\nInputs: ", inputVals);
+         std::cout << net_;
       }
 
       net_.feedForward(inputVals);
@@ -57,10 +58,11 @@ void NNtrainer::train()
       if (do_show(trainingPass_, net_.getRecentAverageError())) {
          // Report how well the training is working, average over recent
          // samples:
-         std::cout << "Net recent average error: "
-                   << net_.getRecentAverageError() << std::endl;
+         // std::cout << "Net recent average error: "
+         //           << net_.getRecentAverageError() << std::endl;
       }
 
       net_.backProp(targetVals);
+      // std::cout << net_;
    }
 }

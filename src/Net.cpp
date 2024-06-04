@@ -1,10 +1,28 @@
 #include "Net.h"
 #include "NNdef.h"
 #include "Neuron.h"
+#include "OSstate.h"
 
 #include <cassert>
 #include <cmath>
 #include <iostream>
+
+std::ostream &operator<<(std::ostream &os, const Net &net)
+{
+   OSstate state{os};
+   os << "===== Neural Network:\n";
+   auto layerNum{0};
+   for (const auto &layer : net.layers_) {
+      os << "- Layer[" << layerNum++ << "]\n";
+      for (const auto &nrn : layer) {
+         os << "   " << nrn << '\n';
+      }
+   }
+   os << "- Recent average error = " << net.getRecentAverageError()
+      << std::endl;
+
+   return os;
+}
 
 double Net::recentAverageSmoothingFactor_ =
    100.0; // Number of training samples to average over
@@ -17,7 +35,6 @@ Net::Net(const nndef::topology_t &topology,
    , RMSerror_{0.0}
    , recentAverageError_{0.5}
 {
-   std::cout << "NN topology\n";
    auto numLayers = topology.size();
    for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
       layers_.push_back(nndef::neurons_layer_t());
@@ -25,23 +42,16 @@ Net::Net(const nndef::topology_t &topology,
          (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
       // We have a new layer, now fill it with neurons, and
       // add a bias neuron in each layer.
-      std::cout << "Layer " << layerNum + 1;
-      if (layerNum == 0) {
-         std::cout << "                        ";
-      } else {
-         std::cout << " neurons + bias neuron: ";
-      }
       for (unsigned neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
          layers_.back().push_back(
             Neuron{numOutputs, neuronNum, action_function_names_[layerNum]});
-         std::cout << '.';
       }
-      std::cout << std::endl;
       // Force the bias node's output to 1.0 (it was the last neuron pushed in
       // this layer):
       layers_.back().back().setOutputVal(1.0);
    }
+   std::cout << *this;
 }
 
 void Net::getResults(nndef::values_layer_t &resultVals) const
