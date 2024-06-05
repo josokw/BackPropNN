@@ -12,8 +12,8 @@ Training sets: XOR, OR, AND, AND3, and NAND. See [Simulation training backprop N
 
 ## Refactoring to Modern C++
 
-Source: [David Miller, C++ code example](https://inkdrop.net/dave/docs/neural-net-tutorial.cpp)
-Video: [David Miller, Neural Net in C++ Tutorial](https://vimeo.com/19569529)
+Source code: [David Miller, C++ code example](https://inkdrop.net/dave/docs/neural-net-tutorial.cpp), also available in *src-original* directory.
+Associated video: [David Miller, Neural Net in C++ Tutorial](https://vimeo.com/19569529)
 Goal of this project: refactoring the David Miller example code to Modern C++. Still under construction ...
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cd688b1e3984f63b00fdee04e7dac4b)](https://www.codacy.com/project/josokw/BackPropNN/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/BackPropNN&amp;utm_campaign=Badge_Grade_Dashboard)
