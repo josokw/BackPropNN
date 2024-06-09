@@ -54,7 +54,6 @@
     },
     "terminal.integrated.env.linux": {
         "GTK_PATH": ""
-    },
-    "cmake.options.statusBarVisibility": "compact"
+    }
 
 }
