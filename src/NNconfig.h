@@ -12,7 +12,7 @@ const double MIN_RECENT_AVERAGE_ERROR = 0.03;
 inline bool do_show(unsigned long iteration, double average_error)
 {
    return (iteration % 1000 == 0) or
-          (average_error < 1.1 * MIN_RECENT_AVERAGE_ERROR);
+          (average_error < 1.05 * MIN_RECENT_AVERAGE_ERROR);
 }
 
 #endif

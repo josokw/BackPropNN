@@ -8,16 +8,21 @@
 /// Class TrainingData for managing training data.
 class TrainingData
 {
-   friend std::ostream &operator<<(std::ostream &os, const TrainingData &trnData);
+   friend std::ostream &operator<<(std::ostream &os,
+                                   const TrainingData &trnData);
    friend std::istream &operator>>(std::istream &is, TrainingData &trnData);
-   
+
 public:
    TrainingData();
    ~TrainingData() = default;
 
    const nndef::topology_t &getTopology() const { return topology_; }
-   const nndef::action_function_names_t &getActionFunctionNames() const { return action_function_names_; }
+   const nndef::action_function_names_t &getActionFunctionNames() const
+   {
+      return action_function_names_;
+   }
    nndef::in_out_pair_t getRandomChoosenInOut() const;
+   nndef::in_out_all_pairs_t getInOut() const { return in_out_all_; }
 
 private:
    nndef::topology_t topology_;
