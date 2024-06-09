@@ -21,7 +21,7 @@ Goal of this project: refactoring the David Miller example code to Modern C++. S
 
 ## Compiling
 
-The C++ code needs **c++20**.
+The C++ code needs **c++20** and **cmake** to be installed.
 
 Go to the *build* directory and type:
 
@@ -43,7 +43,16 @@ Training **XOR**, topology:
 Empty lines and single line comments after **#** are allowed.
 
 The training parameters *momentum* and *learning_rate* are optional.
-If not used default values are used.
+If not used default values (hard coded) are used.
+
+For every layer (except *inputs*) the activation function can be selected:
+
+- tanh
+- sigmoid
+- relu
+- leaky_relu
+
+Training script example: 
 
 ```txt
 # trainingXOR.txt
