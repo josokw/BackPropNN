@@ -67,3 +67,7 @@ out: 0.0   0.0      0.0      1.0        0.0
 in: 1.0 0.0 0.0  0.0 1.0 0.0  0.0 0.0 1.0
 #    solid vertical diagonal horizontal X
 out: 0.0   0.0      0.0      0.0        1.0
+
+show_max_inputs: 3
+show_max_outputs: 1
+output_names: solid vertical diagonal horizontal X

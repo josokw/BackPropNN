@@ -9,6 +9,7 @@
 #include "OSstate.h"
 #include "TrainingData.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -76,14 +77,29 @@ void showInOut(const std::string &message, const TrainingData &trainingData,
              << std::setprecision(precision) << '\n';
 
    for (auto io : in_out) {
-      for (auto i : io.first) {
+      for (int index = 0; auto i : io.first) {
+         if (trainingData.show_max_inputs != 0 and
+             index++ % trainingData.show_max_inputs == 0) {
+            std::cout << '\n';
+         }
          std::cout << i << " ";
       }
-      std::cout << " ==> ";
+      std::cout << "\n"
+                << std::string(std::max(size_t(3), trainingData.max_size), '=')
+                << "> ";
       net.feedForward(io.first);
       nndef::values_layer_t output;
       net.getResults(output);
-      for (auto o : output) {
+      for (auto index = 0UL; auto o : output) {
+         if (trainingData.show_max_outputs != 0 and
+             index % trainingData.show_max_outputs == 0) {
+               if (index < trainingData.output_names.size()) {
+            std::cout << '\n'
+                      << std::setw(trainingData.max_size)
+                      << trainingData.output_names[index] << "  ";
+               }
+         }
+         ++index;
          std::cout << o << " ";
       }
       std::cout << std::endl;

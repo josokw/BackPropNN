@@ -4,6 +4,7 @@
 #include "NNdef.h"
 
 #include <fstream>
+#include <sstream>
 
 /// Class TrainingData for managing training data.
 class TrainingData
@@ -24,10 +25,39 @@ public:
    nndef::in_out_pair_t getRandomChoosenInOut() const;
    nndef::in_out_all_pairs_t getInOut() const { return in_out_all_; }
 
-private:
+   ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
+   double ALPHA{0.5};
+   ///< Overall net learning rate, [0.0..1.0]
+   double ETA{0.15};
+   ///< Max number of input values showed in a line (2D view)
+   int show_max_inputs{0};
+   ///< Max number of output values showed in a line (2D view)
+   int show_max_outputs{0};
+   ///< Names for output values
+   std::vector<std::string> output_names{};
+
+   // private:
    nndef::topology_t topology_;
    nndef::action_function_names_t action_function_names_;
    nndef::in_out_all_pairs_t in_out_all_;
+   nndef::semantic_actions_t semantic_actions_;
+   size_t max_size{0};
 };
+
+inline TrainingData trd;
+
+/// Semantic actions for labels in training data
+/// @todo add checking correct syntax
+void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_topology(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_actionfs(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_in(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_out(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_show_max_inputs(std::stringstream &lineStream,
+                        TrainingData &trainingData);
+void sa_show_max_outputs(std::stringstream &lineStream,
+                         TrainingData &trainingData);
+void sa_output_names(std::stringstream &lineStream, TrainingData &trainingData);
 
 #endif // TRAININGDATA_H

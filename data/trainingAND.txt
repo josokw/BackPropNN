@@ -17,3 +17,7 @@ out: 0.0
 
 in: 1.0 1.0
 out: 1.0
+
+show_max_inputs: 2
+show_max_outputs: 1
+output_names: AND

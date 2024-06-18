@@ -1,8 +1,8 @@
 #include "Neuron.h"
 #include "ActivationFunctions.h"
-#include "NNconfig.h"
 #include "NNdef.h"
 #include "OSstate.h"
+#include "TrainingData.h"
 
 #include <cmath>
 #include <iomanip>
@@ -26,9 +26,9 @@ std::ostream &operator<<(std::ostream &os, const Neuron &neuron)
 }
 
 ///< Overall net learning rate, [0.0..1.0]
-double Neuron::eta = ETA;
+double Neuron::eta = trd.ETA;
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
-double Neuron::alpha = ALPHA;
+double Neuron::alpha = trd.ALPHA;
 
 Neuron::Neuron(unsigned numOutputs, unsigned myIndex,
                const std::string &action_function_name)
