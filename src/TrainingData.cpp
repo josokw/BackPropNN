@@ -41,10 +41,11 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 {
    trnData.topology_.clear();
 
-   auto ignoreCommentWhiteSpace = [&is]() {
+   auto ignoreCommentWhiteSpace = [&is, &trnData]() {
       std::string line;
       while (line.empty() && !is.eof()) {
          getline(is, line);
+         ++trnData.line_;
          // Remove single line comment after #
          if (auto pos = line.find('#'); pos != std::string::npos) {
             line.erase(pos);
@@ -61,13 +62,17 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
       std::string label;
       lineStream1 >> label;
 
-      // std::cout << "'" << label << "'" << std::endl;
-
       if (trnData.semantic_actions_.find(label) !=
           trnData.semantic_actions_.end()) {
          trnData.semantic_actions_[label](lineStream1, trnData);
-      } else
+      } else {
+         if (!label.empty()) {
+            std::cerr << "=== SYNTAX ERROR line [" << trnData.line_ << "]: '"
+                      << label << "' ???\n" << std::endl;
+            std::exit(EXIT_FAILURE);
+         }
          break;
+      }
    }
 
    return is;
@@ -184,7 +189,7 @@ void sa_output_names(std::stringstream &lineStream, TrainingData &trainingData)
       return (a.size() < b.size());
    };
 
-   trainingData.max_size =
+   trainingData.max_size_ =
       std::string(*std::max_element(trainingData.output_names.begin(),
                                     trainingData.output_names.end(),
                                     str_compare))

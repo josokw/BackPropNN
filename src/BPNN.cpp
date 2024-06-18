@@ -85,7 +85,7 @@ void showInOut(const std::string &message, const TrainingData &trainingData,
          std::cout << i << " ";
       }
       std::cout << "\n"
-                << std::string(std::max(size_t(3), trainingData.max_size), '=')
+                << std::string(std::max(size_t(3), trainingData.max_size_), '=')
                 << "> ";
       net.feedForward(io.first);
       nndef::values_layer_t output;
@@ -95,7 +95,7 @@ void showInOut(const std::string &message, const TrainingData &trainingData,
              index % trainingData.show_max_outputs == 0) {
                if (index < trainingData.output_names.size()) {
             std::cout << '\n'
-                      << std::setw(trainingData.max_size)
+                      << std::setw(trainingData.max_size_)
                       << trainingData.output_names[index] << "  ";
                }
          }

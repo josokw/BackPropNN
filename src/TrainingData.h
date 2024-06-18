@@ -41,7 +41,9 @@ public:
    nndef::action_function_names_t action_function_names_;
    nndef::in_out_all_pairs_t in_out_all_;
    nndef::semantic_actions_t semantic_actions_;
-   size_t max_size{0};
+   size_t max_size_{0};
+   /// Line number in config file
+   size_t line_{0};
 };
 
 inline TrainingData trd;
