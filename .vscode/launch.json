@@ -6,7 +6,26 @@
    "configurations": [
       
       {
-         "name": "backpropnn",
+         "name": "backpropnn 3x3-4c",
+         "type": "cppdbg",
+         "request": "launch",
+         "program": "${workspaceFolder}/bin/backpropnn",
+         "args": ["../data/training3x3-4c.txt"],
+         "stopAtEntry": false,
+         "cwd": "${workspaceFolder}/src",
+         "environment": [],
+         "externalConsole": false,
+         "MIMode": "gdb",
+         "setupCommands": [
+            {
+               "description": "Enable pretty-printing for gdb",
+               "text": "-enable-pretty-printing",
+               "ignoreFailures": true
+            }
+         ]
+      },
+      {
+         "name": "backpropnn XOR",
          "type": "cppdbg",
          "request": "launch",
          "program": "${workspaceFolder}/bin/backpropnn",
