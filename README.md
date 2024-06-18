@@ -52,7 +52,7 @@ For every layer (except *inputs*) the activation function can be selected:
 - relu
 - leaky_relu
 
-Training script example: 
+Training script example:
 
 ```txt
 # trainingXOR.txt
@@ -74,9 +74,13 @@ out: 1.0
 
 in: 1.0 1.0
 out: 0.0
+
+show_max_inputs: 2
+show_max_outputs: 1
+output_names: XOR
 ```
 
-Run the code for training XOR in the *bin* directory:
+Go to the *bin* directory and run the code for training XOR:
 
 ```bash
 ./backpropnn ../data/trainingXOR.txt
