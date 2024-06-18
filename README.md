@@ -44,7 +44,7 @@ Empty lines and single line comments after **#** are allowed.
 
 The training parameters *momentum* and *learning_rate* are optional.
 If not used default values (hard coded) are used.
-Traing will always stop after 1000000 steps (hard coded).
+Training will always stop after 1000000 steps (hard coded).
 
 For every layer (except *inputs*) the activation function can be selected:
 
