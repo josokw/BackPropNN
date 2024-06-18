@@ -44,6 +44,7 @@ Empty lines and single line comments after **#** are allowed.
 
 The training parameters *momentum* and *learning_rate* are optional.
 If not used default values (hard coded) are used.
+Traing will always stop after 1000000 steps (hard coded).
 
 For every layer (except *inputs*) the activation function can be selected:
 
@@ -84,4 +85,26 @@ Go to the *bin* directory and run the code for training XOR:
 
 ```bash
 ./backpropnn ../data/trainingXOR.txt
+```
+
+At the end of the training the next text will be shown:
+
+```text
+- Results after training:     
+
++0.000 +0.000 
+===> 
+XOR  +0.003 
+
++1.000 +0.000 
+===> 
+XOR  +0.984 
+
++0.000 +1.000 
+===> 
+XOR  +0.983 
+
++1.000 +1.000 
+===> 
+XOR  +0.020 
 ```
