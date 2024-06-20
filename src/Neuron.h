@@ -17,7 +17,7 @@ class Neuron
 
 public:
    Neuron(unsigned numOutputs, unsigned myIndex,
-          const std::string &action_function_name = "tanh");
+          const std::string &activation_function_name = "tanh");
    ~Neuron() = default;
 
    void setOutputVal(double val) { outputVal_ = val; }
@@ -48,8 +48,8 @@ private:
 
    size_t myIndex_;
    double gradient_;
-   nndef::action_function_t &af_;
-   nndef::action_function_t &af_derivative_;
+   nndef::activation_function_t &af_;
+   nndef::activation_function_t &af_derivative_;
 };
 
 #endif // NEURON_H

@@ -13,7 +13,7 @@ class Net
 
 public:
    Net(const nndef::topology_t &topology,
-       const nndef::action_function_names_t &action_function_names);
+       const nndef::activation_function_names_t &activation_function_names);
    ~Net() = default;
 
    const auto &topology() const { return topology_; }
@@ -24,7 +24,7 @@ public:
 
 private:
    const nndef::topology_t &topology_;
-   const nndef::action_function_names_t &action_function_names_;
+   const nndef::activation_function_names_t &activation_function_names_;
    nndef::neurons_all_layers_t layers_; // layers_[layerNum][neuronNum]
    double RMSerror_;
    double recentAverageError_;

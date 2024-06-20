@@ -12,8 +12,8 @@ std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
    os << "learning rate (ETA): " << trnData.ETA << "\n";
    os << "topology: \n";
    for (int index = 0; auto layerSize : trnData.topology_) {
-      os << "  " << layerSize << "  " << trnData.action_function_names_[index++]
-         << "\n";
+      os << "  " << layerSize << "  "
+         << trnData.activation_function_names_[index++] << "\n";
    }
    os << "\n";
 
@@ -68,7 +68,8 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
       } else {
          if (!label.empty()) {
             std::cerr << "=== SYNTAX ERROR line [" << trnData.line_ << "]: '"
-                      << label << "' ???\n" << std::endl;
+                      << label << "' ???\n"
+                      << std::endl;
             std::exit(EXIT_FAILURE);
          }
          break;
@@ -80,7 +81,7 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
 
 TrainingData::TrainingData()
    : topology_{}
-   , action_function_names_{}
+   , activation_function_names_{}
    , in_out_all_{}
    , semantic_actions_{}
 {
@@ -89,7 +90,7 @@ TrainingData::TrainingData()
    semantic_actions_["ETA:"] = sa_ETA;
    semantic_actions_["learning_rate:"] = sa_ETA;
    semantic_actions_["topology:"] = sa_topology;
-   semantic_actions_["actionfs:"] = sa_actionfs;
+   semantic_actions_["actionfs:"] = sa_activationfs;
    semantic_actions_["in:"] = sa_in;
    semantic_actions_["out:"] = sa_out;
    semantic_actions_["show_max_inputs:"] = sa_show_max_inputs;
@@ -126,12 +127,31 @@ void sa_topology(std::stringstream &lineStream, TrainingData &trainingData)
    }
 }
 
-void sa_actionfs(std::stringstream &lineStream, TrainingData &trainingData)
+void sa_activationfs(std::stringstream &lineStream, TrainingData &trainingData)
 {
    while (!lineStream.eof()) {
       std::string af_name;
       lineStream >> af_name;
-      trainingData.action_function_names_.push_back(af_name);
+      if (af_name != "inputs" and
+          std::find(nndef::all_activation_function_names.begin(),
+                    nndef::all_activation_function_names.end(),
+                    af_name) == nndef::all_activation_function_names.end()) {
+         std::cerr << "=== ERROR line [" << trainingData.line_
+                   << "]: unknown activation function name '" << af_name << "'"
+                   << std::endl
+                   << std::endl;
+         std::exit(EXIT_FAILURE);
+      }
+
+      trainingData.activation_function_names_.push_back(af_name);
+   }
+   if (trainingData.topology_.size() !=
+       trainingData.activation_function_names_.size()) {
+      std::cerr
+         << "=== ERROR line [" << trainingData.line_
+         << "]: number of activation function names not equal to topology"
+         << std::endl;
+      std::exit(EXIT_FAILURE);
    }
 }
 

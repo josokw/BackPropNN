@@ -18,9 +18,9 @@ public:
    ~TrainingData() = default;
 
    const nndef::topology_t &getTopology() const { return topology_; }
-   const nndef::action_function_names_t &getActionFunctionNames() const
+   const nndef::activation_function_names_t &getActionFunctionNames() const
    {
-      return action_function_names_;
+      return activation_function_names_;
    }
    nndef::in_out_pair_t getRandomChoosenInOut() const;
    nndef::in_out_all_pairs_t getInOut() const { return in_out_all_; }
@@ -38,9 +38,9 @@ public:
 
    // private:
    nndef::topology_t topology_;
-   nndef::action_function_names_t action_function_names_;
+   nndef::activation_function_names_t activation_function_names_;
    nndef::in_out_all_pairs_t in_out_all_;
-   nndef::semantic_actions_t semantic_actions_;
+   nndef::semantic_activations_t semantic_actions_;
    size_t max_size_{0};
    /// Line number in config file
    size_t line_{0};
@@ -49,11 +49,11 @@ public:
 inline TrainingData trd;
 
 /// Semantic actions for labels in training data
-/// @todo add checking correct syntax
+/// @todo add more checking correct syntax
 void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_topology(std::stringstream &lineStream, TrainingData &trainingData);
-void sa_actionfs(std::stringstream &lineStream, TrainingData &trainingData);
+void sa_activationfs(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_in(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_out(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_show_max_inputs(std::stringstream &lineStream,

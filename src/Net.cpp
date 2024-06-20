@@ -28,9 +28,9 @@ double Net::recentAverageSmoothingFactor_ =
    100.0; // Number of training samples to average over
 
 Net::Net(const nndef::topology_t &topology,
-         const nndef::action_function_names_t &action_function_names)
+         const nndef::activation_function_names_t &activation_function_names)
    : topology_{topology}
-   , action_function_names_{action_function_names}
+   , activation_function_names_{activation_function_names}
    , layers_{}
    , RMSerror_{0.0}
    , recentAverageError_{0.5}
@@ -45,7 +45,7 @@ Net::Net(const nndef::topology_t &topology,
       for (unsigned neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
          layers_.back().push_back(
-            Neuron{numOutputs, neuronNum, action_function_names_[layerNum]});
+            Neuron{numOutputs, neuronNum, activation_function_names_[layerNum]});
       }
       // Force the bias node's output to 1.0 (it was the last neuron pushed in
       // this layer):
