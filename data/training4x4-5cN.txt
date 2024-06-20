@@ -1,0 +1,114 @@
+# training4x4-5cN.txt
+
+# NN for counting and classification (7): pixels% solid vertical diagonal horizontal X noise
+
+momentum: 0.5
+learning_rate: 0.15
+
+topology: 16      7    8    5    7
+actionfs: inputs  tanh tanh tanh leaky_relu
+
+# solid
+#in: 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+#out: 0.0    1.0   0.0      0.0      0.0        0.0 0.0
+
+# solid
+in: 1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 1.0   1.0   0.0      0.0      0.0        0.0 0.0
+
+# vertical
+in: 1.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0  
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   1.0      0.0      0.0        0.0 0.0
+
+
+# vertical
+in: 0.0 1.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 1.0 0.0 0.0  
+#    pixels solid vertical diagonal horizontal X   noise 
+out: 0.25   0.0   1.0      0.0      0.0        0.0 0.0
+
+# vertical
+in: 0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   1.0      0.0      0.0        0.0 0.0
+
+# vertical
+in: 0.0 0.0 0.0 1.0  0.0 0.0 0.0 1.0  0.0 0.0 0.0 1.0  0.0 0.0 0.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   1.0      0.0      0.0        0.0 0.0
+
+# diagonal
+in: 0.0 0.0 0.0 1.0  0.0 0.0 1.0 0.0  0.0 1.0 0.0 0.0  1.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      1.0      0.0        0.0 0.0
+
+# diagonal
+in: 1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      1.0      0.0        0.0 0.0
+
+# diagonal
+in: 0.0 0.0 0.0 1.0  0.0 0.0 1.0 0.0  0.0 1.0 0.0 0.0  1.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      1.0      0.0        0.0 0.0
+
+# horizontal
+in: 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      0.0      1.0        0.0 0.0
+
+# horizontal
+in: 0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0      0.0   0.0      1.0        0.0 0.0
+
+# horizontal
+in: 1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      0.0      1.0        0.0 0.0
+
+# horizontal
+in: 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0 
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.25   0.0   0.0      0.0      1.0        0.0 0.0
+
+# X
+in: 1.0 0.0 0.0 1.0  0.0 1.0 1.0 0.0  0.0 1.0 1.0 0.0  1.0 0.0 0.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.5    0.0   0.0      0.0      0.0        1.0 0.0
+
+# noise
+in: 1.0 0.0 0.0 0.0  0.0 1.0 1.0 0.0  1.0 0.0 1.0 1.0  1.0 0.0 1.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.56   0.0   0.0      0.0      0.0        0.0 1.0
+
+# noise
+in: 1.0 0.0 1.0 0.0  0.0 0.0 1.0 1.0  1.0 1.0 1.0 0.0  0.0 1.0 0.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.56   0.0   0.0      0.0      0.0        0.0 1.0
+
+# noise
+in: 0.0 1.0 1.0 0.0  1.0 1.0 1.0 0.0  1.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.5    0.0   0.0      0.0      0.0        0.0 1.0
+
+# noise
+in: 0.0 1.0 1.0 0.0  0.0 0.0 1.0 0.0  1.0 0.0 1.0 0.0  1.0 0.0 1.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.44   0.0   0.0      0.0      0.0        0.0 1.0
+
+# noise
+in: 1.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0  0.0 0.0 0.0 1.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.13   0.0   0.0      0.0      0.0        0.0 1.0
+
+# noise
+in: 0.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0  0.0 0.0 0.0 0.0
+#    pixels solid vertical diagonal horizontal X   noise
+out: 0.13   0.0   0.0      0.0      0.0        0.0 1.0
+
+show_max_inputs: 4
+show_max_outputs: 1
+output_names: pixels%/100 solid vertical diagonal horizontal X noise
