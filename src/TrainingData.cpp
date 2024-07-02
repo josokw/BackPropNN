@@ -106,23 +106,40 @@ nndef::in_out_pair_t TrainingData::getRandomChoosenInOut() const
 
 void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData)
 {
-   while (!lineStream.eof()) {
+   while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.ALPHA;
+   }
+   if (lineStream.fail() or
+       not(trainingData.ALPHA > 0.0 and trainingData.ALPHA < 1.0)) {
+      std::cerr << "=== ERROR line [" << trainingData.line_
+                << "]: ALPHA (momentum) not in range (0, 1)\n\n";
+      std::exit(EXIT_FAILURE);
    }
 }
 
 void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData)
 {
-   while (!lineStream.eof()) {
+   while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.ETA;
+   }
+   if (lineStream.fail() or
+       not(trainingData.ETA > 0.0 and trainingData.ETA < 1.0)) {
+      std::cerr << "=== ERROR line [" << trainingData.line_
+                << "]: ETA (learning rate) not in range (0,1)\n\n";
+      std::exit(EXIT_FAILURE);
    }
 }
 
 void sa_topology(std::stringstream &lineStream, TrainingData &trainingData)
 {
-   while (!lineStream.eof()) {
-      unsigned n;
+   while (not lineStream.eof() and not lineStream.fail()) {
+      int n{0};
       lineStream >> n;
+      if (lineStream.fail() or n <= 0) {
+         std::cerr << "=== ERROR line [" << trainingData.line_
+                   << "]: topology data not > 0\n\n";
+         std::exit(EXIT_FAILURE);
+      }
       trainingData.topology_.push_back(n);
    }
 }
