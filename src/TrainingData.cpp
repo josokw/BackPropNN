@@ -1,5 +1,6 @@
 #include "TrainingData.h"
 #include "NNdef.h"
+#include "Neuron.h"
 
 #include <iostream>
 #include <map>
@@ -115,6 +116,7 @@ void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData)
                 << "]: ALPHA (momentum) not in range (0, 1)\n\n";
       std::exit(EXIT_FAILURE);
    }
+   Neuron::set_alpha(trainingData.ALPHA);
 }
 
 void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData)
@@ -128,6 +130,7 @@ void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData)
                 << "]: ETA (learning rate) not in range (0,1)\n\n";
       std::exit(EXIT_FAILURE);
    }
+   Neuron::set_eta(trainingData.ETA);
 }
 
 void sa_topology(std::stringstream &lineStream, TrainingData &trainingData)
@@ -154,9 +157,8 @@ void sa_activationfs(std::stringstream &lineStream, TrainingData &trainingData)
                     nndef::all_activation_function_names.end(),
                     af_name) == nndef::all_activation_function_names.end()) {
          std::cerr << "=== ERROR line [" << trainingData.line_
-                   << "]: unknown activation function name '" << af_name << "'"
-                   << std::endl
-                   << std::endl;
+                   << "]: unknown activation function name '" << af_name
+                   << "'\n\n";
          std::exit(EXIT_FAILURE);
       }
 
@@ -166,8 +168,7 @@ void sa_activationfs(std::stringstream &lineStream, TrainingData &trainingData)
        trainingData.activation_function_names_.size()) {
       std::cerr
          << "=== ERROR line [" << trainingData.line_
-         << "]: number of activation function names not equal to topology"
-         << std::endl;
+         << "]: number of activation function names not equal to topology\n\n";
       std::exit(EXIT_FAILURE);
    }
 }
@@ -199,16 +200,26 @@ void sa_out(std::stringstream &lineStream, TrainingData &trainingData)
 void sa_show_max_inputs(std::stringstream &lineStream,
                         TrainingData &trainingData)
 {
-   while (!lineStream.eof()) {
+   while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.show_max_inputs;
+      if (lineStream.fail() or trainingData.show_max_inputs < 0) {
+         std::cerr << "=== ERROR line [" << trainingData.line_
+                   << "]: show_max_inputs is not >= 0\n\n";
+         std::exit(EXIT_FAILURE);
+      }
    }
 }
 
 void sa_show_max_outputs(std::stringstream &lineStream,
                          TrainingData &trainingData)
 {
-   while (!lineStream.eof()) {
+   while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.show_max_outputs;
+      if (lineStream.fail() or trainingData.show_max_outputs < 0) {
+         std::cerr << "=== ERROR line [" << trainingData.line_
+                   << "]: show_max_outputs is not >= 0\n\n";
+         std::exit(EXIT_FAILURE);
+      }
    }
 }
 

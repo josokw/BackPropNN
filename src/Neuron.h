@@ -29,10 +29,13 @@ public:
    void calcHiddenGradients(const nndef::neurons_layer_t &nextLayer);
    void updateInputWeights(nndef::neurons_layer_t &prevLayer);
 
+   static void set_eta(double eta) { Neuron::eta = eta; }
+   static void set_alpha(double alpha) { Neuron::alpha = alpha; }
+
 private:
-   /// [0.0..1.0] overall net training rate.
+   /// (0.0, 1.0) overall net training rate.
    static double eta;
-   // [0.0..n] multiplier of last weight change (momentum).
+   // (0.0, 1.0) multiplier of last weight change (momentum).
    static double alpha;
 
    /// Activation function.

@@ -2,8 +2,8 @@
 
 # NN for counting and classification (7): pixels% solid vertical diagonal horizontal X noise
 
-momentum: 0.95
-learning_rate: 0.15
+momentum: 0.2
+learning_rate: 0.005
 
 topology: 16      7    8    5    7
 actionfs: inputs  tanh tanh tanh leaky_relu
