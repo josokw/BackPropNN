@@ -233,7 +233,7 @@ void sa_output_names(std::stringstream &lineStream, TrainingData &trainingData)
       }
    }
 
-   auto str_compare = [](std::string a, std::string b) {
+   auto str_compare = [](const std::string &a, const std::string &b) {
       return (a.size() < b.size());
    };
 

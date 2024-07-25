@@ -30,6 +30,12 @@ cmake ..
 make -j
 ```
 
+## Use *cppcheck*
+
+```bash
+cppcheck --enable=all --std=c++20 --verbose .
+```
+
 ## Running and training a BackProp NN
 
 A set of inputs for which the correct outputs are known, used to train the neural network.

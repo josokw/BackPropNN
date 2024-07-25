@@ -98,8 +98,8 @@ void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
 {
    double sum = 0.0;
 
-   for (auto &neuron : prevLayer) {
-      sum += neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight;
+   for (auto const &neuron : prevLayer) {
+      sum += (neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight);
    }
    outputVal_ = Neuron::activationFunction(sum);
 }
