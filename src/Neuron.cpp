@@ -7,6 +7,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <numeric>
 
 std::ostream &operator<<(std::ostream &os, const Neuron &neuron)
 {
@@ -96,10 +97,13 @@ double Neuron::activationFunctionDerivative(double z)
 
 void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
 {
-   double sum = 0.0;
+   auto calc_sum = [=, this](double current, const Neuron &neuron) {
+      return current +
+             (neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight);
+   };
 
-   for (auto const &neuron : prevLayer) {
-      sum += (neuron.getOutputVal() * neuron.outputWeights_[myIndex_].weight);
-   }
+   auto sum =
+      std::accumulate(prevLayer.begin(), prevLayer.end(), 0.0, calc_sum);
+
    outputVal_ = Neuron::activationFunction(sum);
 }
