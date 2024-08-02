@@ -103,7 +103,7 @@ void Neuron::feedForward(const nndef::neurons_layer_t &prevLayer)
    };
 
    auto sum =
-      std::accumulate(prevLayer.begin(), prevLayer.end(), 0.0, calc_sum);
+      std::accumulate(prevLayer.cbegin(), prevLayer.cend(), 0.0, calc_sum);
 
    outputVal_ = Neuron::activationFunction(sum);
 }

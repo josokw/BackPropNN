@@ -5,6 +5,7 @@
 #include "TrainingData.h"
 
 #include <cassert>
+#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -26,6 +27,8 @@ void NNtrainer::train()
       }
       std::cout << std::endl;
    };
+
+   const auto t_start = std::chrono::high_resolution_clock::now();
 
    while (trainingPass_ < MAX_ITERATIONS &&
           net_.getRecentAverageError() > MIN_RECENT_AVERAGE_ERROR) {
@@ -65,4 +68,9 @@ void NNtrainer::train()
       net_.backProp(targetVals);
       // std::cout << net_;
    }
+
+   const auto t_ready = std::chrono::high_resolution_clock::now();
+   const std::chrono::duration<double, std::milli> ms = t_ready - t_start;
+   std::cout << std::fixed << std::setprecision(1) << "\n- Training took "
+             << ms.count() << " ms\n";
 }
