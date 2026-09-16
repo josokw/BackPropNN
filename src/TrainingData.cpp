@@ -2,6 +2,7 @@
 #include "NNdef.h"
 #include "Neuron.h"
 
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <sstream>
