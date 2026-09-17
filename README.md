@@ -14,20 +14,39 @@ Training sets: XOR, OR, AND, AND3, NAND and more can  be found in text files in 
 
 Source code: [David Miller, C++ code example](https://inkdrop.net/dave/docs/neural-net-tutorial.cpp), also available in *src-original* directory.
 Associated video: [David Miller, Neural Net in C++ Tutorial](https://vimeo.com/19569529)
-Goal of this project: refactoring the David Miller example code to Modern C++. Still under construction ...
+Goal of this project: refactoring the David Miller example code to Modern C++. Actively maintained; more improvements are planned.
+
+The refactoring has already applied a number of modern C++ techniques:
+
+- **C++20** as the language standard (`-std=c++20`).
+- `std::size_t` types for indices and sizes of containers (no more `unsigned` mix-ups).
+- Structured bindings, digit separators (`1'000'000`) and brace initialization.
+- `inline constexpr` constants for training defaults, centralized in *src/NNconfig.h*.
+- `[[nodiscard]]` on value-returning accessors to catch discarded results.
+- RAII via *OSstate* to restore stream formatting flags automatically.
+- `std::format` for error messages.
+- Errors reported through `std::runtime_error` exceptions instead of `exit()`.
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cd688b1e3984f63b00fdee04e7dac4b)](https://www.codacy.com/project/josokw/BackPropNN/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/BackPropNN&amp;utm_campaign=Badge_Grade_Dashboard)
 [![CodeFactor](https://www.codefactor.io/repository/github/josokw/backpropnn/badge)](https://www.codefactor.io/repository/github/josokw/backpropnn)
 
 ## Compiling
 
-The C++ code needs **c++20** and **cmake** to be installed.
+The C++ code needs **c++20** and **cmake** (version 3.20 or newer) to be installed.
 
 Go to the *build* directory and type:
 
 ```bash
 cmake ..
 make -j
+```
+
+The executable *backpropnn* is written to the *bin* directory.
+
+Alternatively build with the standalone Makefile (compiles with an extra `-Weffc++`):
+
+```bash
+make -C src
 ```
 
 ## Use *cppcheck*
@@ -49,8 +68,11 @@ Training **XOR**, topology:
 Empty lines and single line comments after **#** are allowed.
 
 The training parameters *momentum* and *learning_rate* are optional.
-If not used default values (hard coded) are used.
-Training will always stop after 1000000 steps (hard coded).
+If not used, the default values `0.5` and `0.15` (defined in *src/NNconfig.h*) are applied.
+Training stops when the recent average error falls below `0.03`, or after `1,000,000`
+training passes, whichever comes first (both limits are defined in *src/NNconfig.h*).
+
+The labels *momentum* and *learning_rate* may also be written as *ALPHA* and *ETA*.
 
 For every layer (except *inputs*) the activation function can be selected:
 
@@ -85,6 +107,14 @@ out: 0.0
 show_max_inputs: 2
 show_max_outputs: 1
 output_names: XOR
+```
+
+Errors in the training script (unknown labels, out-of-range values, a topology that does
+not match the activation function list, ...) are reported with the offending line number
+and stop the program with a non-zero exit code. Example:
+
+```text
+ERROR: === ERROR line [5]: 'bogus_label:' ???
 ```
 
 Go to the *bin* directory and run the code for training XOR:
