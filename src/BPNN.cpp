@@ -10,6 +10,7 @@
 #include "TrainingData.h"
 
 #include <algorithm>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
 {
    if (argc != 2) {
       std::cerr << "Usage " << argv[0] << " <file name>\n\n";
-      exit(1);
+      return EXIT_FAILURE;
    }
 
    std::cout << "*** " APPNAME_VERSION " started\n";
@@ -33,7 +34,7 @@ int main(int argc, char *argv[])
    std::ifstream trainingDataStream{argv[1]};
    if (not trainingDataStream) {
       std::cerr << "ERROR: file " << argv[1] << " can not be opened\n";
-      exit(EXIT_FAILURE);
+      return EXIT_FAILURE;
    }
 
    std::cout << "*** config file: " << argv[1] << "\n\n";
@@ -54,9 +55,11 @@ int main(int argc, char *argv[])
    }
    catch (std::exception &e) {
       std::cerr << "ERROR: " << e.what() << "\n";
+      return EXIT_FAILURE;
    }
    catch (...) {
       std::cerr << "ERROR: unknown exception\n";
+      return EXIT_FAILURE;
    }
 
    std::cout << "\n*** " APPNAME_VERSION " ready\n\n";

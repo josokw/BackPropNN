@@ -3,9 +3,11 @@
 #include "Neuron.h"
 
 #include <algorithm>
+#include <format>
 #include <iostream>
 #include <map>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
@@ -67,15 +69,13 @@ std::istream &operator>>(std::istream &is, TrainingData &trnData)
       if (trnData.semantic_actions_.find(label) !=
           trnData.semantic_actions_.end()) {
          trnData.semantic_actions_[label](lineStream1, trnData);
-      } else {
-         if (!label.empty()) {
-            std::cerr << "=== SYNTAX ERROR line [" << trnData.line_ << "]: '"
-                      << label << "' ???\n"
-                      << std::endl;
-            std::exit(EXIT_FAILURE);
-         }
-         break;
-      }
+} else {
+          if (!label.empty()) {
+             throw std::runtime_error(std::format(
+                "=== SYNTAX ERROR line [{}]: '{}' ???", trnData.line_, label));
+          }
+          break;
+       }
    }
 
    return is;
@@ -113,9 +113,9 @@ void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData)
    }
    if (lineStream.fail() or
        not(trainingData.ALPHA > 0.0 and trainingData.ALPHA < 1.0)) {
-      std::cerr << "=== ERROR line [" << trainingData.line_
-                << "]: ALPHA (momentum) not in range (0, 1)\n\n";
-      std::exit(EXIT_FAILURE);
+      throw std::runtime_error(std::format(
+         "=== ERROR line [{}]: ALPHA (momentum) not in range (0, 1)",
+         trainingData.line_));
    }
    Neuron::set_alpha(trainingData.ALPHA);
 }
@@ -125,11 +125,10 @@ void sa_ETA(std::stringstream &lineStream, TrainingData &trainingData)
    while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.ETA;
    }
-   if (lineStream.fail() or
-       not(trainingData.ETA > 0.0 and trainingData.ETA < 1.0)) {
-      std::cerr << "=== ERROR line [" << trainingData.line_
-                << "]: ETA (learning rate) not in range (0,1)\n\n";
-      std::exit(EXIT_FAILURE);
+   if (lineStream.fail() or not(trainingData.ETA > 0.0 and trainingData.ETA < 1.0)) {
+      throw std::runtime_error(std::format(
+         "=== ERROR line [{}]: ETA (learning rate) not in range (0,1)",
+         trainingData.line_));
    }
    Neuron::set_eta(trainingData.ETA);
 }
@@ -140,9 +139,9 @@ void sa_topology(std::stringstream &lineStream, TrainingData &trainingData)
       int n{0};
       lineStream >> n;
       if (lineStream.fail() or n <= 0) {
-         std::cerr << "=== ERROR line [" << trainingData.line_
-                   << "]: topology data not > 0\n\n";
-         std::exit(EXIT_FAILURE);
+         throw std::runtime_error(std::format(
+            "=== ERROR line [{}]: topology data not > 0",
+            trainingData.line_));
       }
       trainingData.topology_.push_back(n);
    }
@@ -157,20 +156,19 @@ void sa_activationfs(std::stringstream &lineStream, TrainingData &trainingData)
           std::find(nndef::all_activation_function_names.begin(),
                     nndef::all_activation_function_names.end(),
                     af_name) == nndef::all_activation_function_names.end()) {
-         std::cerr << "=== ERROR line [" << trainingData.line_
-                   << "]: unknown activation function name '" << af_name
-                   << "'\n\n";
-         std::exit(EXIT_FAILURE);
+         throw std::runtime_error(std::format(
+            "=== ERROR line [{}]: unknown activation function name '{}'",
+            trainingData.line_, af_name));
       }
 
       trainingData.activation_function_names_.push_back(af_name);
    }
    if (trainingData.topology_.size() !=
        trainingData.activation_function_names_.size()) {
-      std::cerr
-         << "=== ERROR line [" << trainingData.line_
-         << "]: number of activation function names not equal to topology\n\n";
-      std::exit(EXIT_FAILURE);
+      throw std::runtime_error(std::format(
+         "=== ERROR line [{}]: number of activation function names not equal "
+         "to topology",
+         trainingData.line_));
    }
 }
 
@@ -204,9 +202,9 @@ void sa_show_max_inputs(std::stringstream &lineStream,
    while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.show_max_inputs;
       if (lineStream.fail() or trainingData.show_max_inputs < 0) {
-         std::cerr << "=== ERROR line [" << trainingData.line_
-                   << "]: show_max_inputs is not >= 0\n\n";
-         std::exit(EXIT_FAILURE);
+         throw std::runtime_error(std::format(
+            "=== ERROR line [{}]: show_max_inputs is not >= 0",
+            trainingData.line_));
       }
    }
 }
@@ -217,9 +215,9 @@ void sa_show_max_outputs(std::stringstream &lineStream,
    while (not lineStream.eof() and not lineStream.fail()) {
       lineStream >> trainingData.show_max_outputs;
       if (lineStream.fail() or trainingData.show_max_outputs < 0) {
-         std::cerr << "=== ERROR line [" << trainingData.line_
-                   << "]: show_max_outputs is not >= 0\n\n";
-         std::exit(EXIT_FAILURE);
+         throw std::runtime_error(std::format(
+            "=== ERROR line [{}]: show_max_outputs is not >= 0",
+            trainingData.line_));
       }
    }
 }
