@@ -1,6 +1,8 @@
 #ifndef NNTRAINER_H
 #define NNTRAINER_H
 
+#include <cstddef>
+
 class Net;
 class TrainingData;
 
@@ -16,7 +18,7 @@ public:
 private:
    Net &net_;
    TrainingData &trainingData_;
-   unsigned long trainingPass_{0UL};
+   std::size_t trainingPass_{0UL};
 };
 
 #endif

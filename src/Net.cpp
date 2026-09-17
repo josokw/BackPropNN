@@ -36,13 +36,13 @@ Net::Net(const nndef::topology_t &topology,
    , recentAverageError_{0.5}
 {
    auto numLayers = topology.size();
-   for (unsigned layerNum = 0; layerNum < numLayers; ++layerNum) {
+   for (std::size_t layerNum = 0; layerNum < numLayers; ++layerNum) {
       layers_.push_back(nndef::neurons_layer_t());
-      unsigned numOutputs =
+      std::size_t numOutputs =
          (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
       // We have a new layer, now fill it with neurons, and
       // add a bias neuron in each layer.
-      for (unsigned neuronNum = 0; neuronNum <= topology[layerNum];
+      for (std::size_t neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
          layers_.back().push_back(
             Neuron{numOutputs, neuronNum, activation_function_names_[layerNum]});
@@ -57,7 +57,7 @@ Net::Net(const nndef::topology_t &topology,
 void Net::getResults(nndef::values_layer_t &resultVals) const
 {
    resultVals.clear();
-   for (unsigned n = 0; n < layers_.back().size() - 1; ++n) {
+   for (std::size_t n = 0; n < layers_.back().size() - 1; ++n) {
       resultVals.push_back(layers_.back()[n].getOutputVal());
    }
 }
@@ -68,7 +68,7 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
    nndef::neurons_layer_t &outputLayer = layers_.back();
    double error = 0.0;
 
-   for (unsigned n = 0; n < outputLayer.size() - 1; ++n) {
+   for (std::size_t n = 0; n < outputLayer.size() - 1; ++n) {
       double delta = targetVals[n] - outputLayer[n].getOutputVal();
       error += delta * delta;
    }
@@ -85,11 +85,11 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
    }
 
    // Calculate hidden layer gradients
-   for (unsigned layerNum = layers_.size() - 2; layerNum > 0; --layerNum) {
+   for (std::size_t layerNum = layers_.size() - 2; layerNum > 0; --layerNum) {
       nndef::neurons_layer_t &hiddenLayer = layers_[layerNum];
       nndef::neurons_layer_t &nextLayer = layers_[layerNum + 1];
 
-      for (unsigned n = 0; n < hiddenLayer.size(); ++n) {
+      for (std::size_t n = 0; n < hiddenLayer.size(); ++n) {
          hiddenLayer[n].calcHiddenGradients(nextLayer);
       }
    }
@@ -98,7 +98,7 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
    for (auto layerNum = layers_.size() - 1; layerNum > 0; --layerNum) {
       nndef::neurons_layer_t &layer = layers_[layerNum];
       nndef::neurons_layer_t &prevLayer = layers_[layerNum - 1];
-      for (unsigned n = 0; n < layer.size() - 1; ++n) {
+      for (std::size_t n = 0; n < layer.size() - 1; ++n) {
          layer[n].updateInputWeights(prevLayer);
       }
    }
@@ -113,9 +113,9 @@ void Net::feedForward(const nndef::values_layer_t &inputVals)
       layers_[0][i].setOutputVal(inputVals[i]);
    }
    // forward propagate
-   for (unsigned layerNum = 1; layerNum < layers_.size(); ++layerNum) {
+   for (std::size_t layerNum = 1; layerNum < layers_.size(); ++layerNum) {
       nndef::neurons_layer_t &prevLayer = layers_[layerNum - 1];
-      for (unsigned n = 0; n < layers_[layerNum].size() - 1; ++n) {
+      for (std::size_t n = 0; n < layers_[layerNum].size() - 1; ++n) {
          layers_[layerNum][n].feedForward(prevLayer);
       }
    }

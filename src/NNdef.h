@@ -1,6 +1,7 @@
 #ifndef NNDEF_H
 #define NNDEF_H
 
+#include <cstddef>
 #include <functional>
 #include <map>
 #include <string>
@@ -17,7 +18,7 @@ using connection_t = struct connection {
    double deltaWeight;
 };
 
-using topology_t = std::vector<unsigned>;
+using topology_t = std::vector<std::size_t>;
 
 using activation_function_names_t = std::vector<std::string>;
 using activation_function_t = std::function<double(double)>;

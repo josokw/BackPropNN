@@ -16,7 +16,7 @@ class Neuron
    friend std::ostream &operator<<(std::ostream &os, const Neuron &neuron);
 
 public:
-   Neuron(unsigned numOutputs, unsigned myIndex,
+   Neuron(std::size_t numOutputs, std::size_t myIndex,
           const std::string &activation_function_name = "tanh");
    ~Neuron() = default;
 

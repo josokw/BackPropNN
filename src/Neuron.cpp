@@ -31,7 +31,7 @@ double Neuron::eta = DEFAULT_ETA;
 ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
 double Neuron::alpha = DEFAULT_ALPHA;
 
-Neuron::Neuron(unsigned numOutputs, unsigned myIndex,
+Neuron::Neuron(std::size_t numOutputs, std::size_t myIndex,
                const std::string &activation_function_name)
    : outputVal_{0.0}
    , outputWeights_{}
@@ -40,7 +40,7 @@ Neuron::Neuron(unsigned numOutputs, unsigned myIndex,
    , af_{nn::act_fs[activation_function_name].first}
    , af_derivative_{nn::act_fs[activation_function_name].second}
 {
-   for (unsigned c = 0; c < numOutputs; ++c) {
+   for (std::size_t c = 0; c < numOutputs; ++c) {
       outputWeights_.push_back(nndef::connection_t());
       outputWeights_.back().weight = randomWeight();
    }
