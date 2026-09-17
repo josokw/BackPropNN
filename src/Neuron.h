@@ -3,8 +3,8 @@
 
 #include "ActivationFunctions.h"
 #include "NNdef.h"
+#include "RNG.h"
 
-#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -17,7 +17,8 @@ class Neuron
 
 public:
    Neuron(std::size_t numOutputs, std::size_t myIndex,
-          const std::string &activation_function_name = "tanh");
+          const std::string &activation_function_name = "tanh",
+          std::size_t fan_in = 0);
    ~Neuron() = default;
 
    void setOutputVal(double val) { outputVal_ = val; }
@@ -42,8 +43,6 @@ private:
    double activationFunction(double z);
    /// Activation derivative function.
    double activationFunctionDerivative(double z);
-   /// For randomly initialisation of the weigths. Seed == 1;
-   static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
    [[nodiscard]] double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
    double outputVal_;

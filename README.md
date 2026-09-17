@@ -26,6 +26,10 @@ The refactoring has already applied a number of modern C++ techniques:
 - RAII via *OSstate* to restore stream formatting flags automatically.
 - `std::format` for error messages.
 - Errors reported through `std::runtime_error` exceptions instead of `exit()`.
+- Weight initialisation uses a seeded Mersenne Twister (`std::mt19937`) with
+  Glorot/Xavier init for `tanh`/`sigmoid` layers and He init for the ReLU
+  family, replacing the non-centred uniform `[0, 1)` default. A fixed seed
+  makes training runs reproducible.
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cd688b1e3984f63b00fdee04e7dac4b)](https://www.codacy.com/project/josokw/BackPropNN/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/BackPropNN&amp;utm_campaign=Badge_Grade_Dashboard)
 [![CodeFactor](https://www.codefactor.io/repository/github/josokw/backpropnn/badge)](https://www.codefactor.io/repository/github/josokw/backpropnn)
@@ -72,6 +76,11 @@ If not used, the default values `0.5` and `0.15` (defined in *src/NNconfig.h*) a
 Training stops when the recent average error falls below `0.03`, or after `1,000,000`
 training passes, whichever comes first (both limits are defined in *src/NNconfig.h*).
 
+The weights are initialised with a seeded Mersenne Twister using Glorot/Xavier
+init for `tanh`/`sigmoid` layers and He init for the ReLU family. The optional
+*seed* parameter controls the random generator (default `1`, see *src/NNconfig.h*):
+the same seed and config produce an identical, reproducible training run.
+
 The labels *momentum* and *learning_rate* may also be written as *ALPHA* and *ETA*.
 
 For every layer (except *inputs*) the activation function can be selected:
@@ -88,6 +97,7 @@ Training script example:
 
 momentum: 0.5
 learning_rate: 0.15
+seed: 1
 
 topology: 2      5    1
 actionfs: inputs tanh tanh

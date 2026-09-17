@@ -40,12 +40,19 @@ Net::Net(const nndef::topology_t &topology,
       layers_.push_back(nndef::neurons_layer_t());
       std::size_t numOutputs =
          (layerNum == topology.size() - 1) ? 0 : topology[layerNum + 1];
+      // Number of incoming weighted inputs for weight initialisation.
+      // Input layer is fed externally, deeper layers sum the previous
+      // layer's neurons including its bias neuron.
+      std::size_t fan_in =
+         (layerNum == 0) ? topology[0] : topology[layerNum - 1] + 1;
       // We have a new layer, now fill it with neurons, and
       // add a bias neuron in each layer.
       for (std::size_t neuronNum = 0; neuronNum <= topology[layerNum];
            ++neuronNum) {
-         layers_.back().push_back(
-            Neuron{numOutputs, neuronNum, activation_function_names_[layerNum]});
+         layers_.back().push_back(Neuron{numOutputs,
+                                         neuronNum,
+                                         activation_function_names_[layerNum],
+                                         fan_in});
       }
       // Force the bias node's output to 1.0 (it was the last neuron pushed in
       // this layer):

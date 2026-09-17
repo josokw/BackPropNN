@@ -20,6 +20,9 @@ backpropnn
 xor
 counting
 
+# Auto-generated dependency file from the standalone Makefile
+depend
+
 # Backup files
 *~
 

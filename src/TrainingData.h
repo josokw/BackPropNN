@@ -41,6 +41,8 @@ public:
    int show_max_inputs{0};
    ///< Max number of output values showed in a line (2D view)
    int show_max_outputs{0};
+   ///< Seed for the Mersenne Twister RNG, [reproducibility]
+   std::size_t seed{DEFAULT_SEED};
    ///< Names for output values
    std::vector<std::string> output_names{};
 
@@ -66,6 +68,7 @@ void sa_show_max_inputs(std::stringstream &lineStream,
                         TrainingData &trainingData);
 void sa_show_max_outputs(std::stringstream &lineStream,
                          TrainingData &trainingData);
+void sa_seed(std::stringstream &lineStream, TrainingData &trainingData);
 void sa_output_names(std::stringstream &lineStream, TrainingData &trainingData);
 
 #endif // TRAININGDATA_H

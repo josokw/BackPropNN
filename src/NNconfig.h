@@ -10,6 +10,8 @@ const double MIN_RECENT_AVERAGE_ERROR = 0.03;
 inline constexpr double DEFAULT_ETA = 0.15;
 ///< Default momentum when the config file omits ALPHA.
 inline constexpr double DEFAULT_ALPHA = 0.5;
+///< Default seed for the Mersenne Twister when the config file omits 'seed:'.
+inline constexpr std::size_t DEFAULT_SEED = 1;
 
 [[nodiscard]] inline bool do_show(std::size_t iteration, double average_error)
 {

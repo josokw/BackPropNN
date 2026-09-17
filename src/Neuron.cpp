@@ -32,7 +32,7 @@ double Neuron::eta = DEFAULT_ETA;
 double Neuron::alpha = DEFAULT_ALPHA;
 
 Neuron::Neuron(std::size_t numOutputs, std::size_t myIndex,
-               const std::string &activation_function_name)
+               const std::string &activation_function_name, std::size_t fan_in)
    : outputVal_{0.0}
    , outputWeights_{}
    , myIndex_{myIndex}
@@ -40,9 +40,13 @@ Neuron::Neuron(std::size_t numOutputs, std::size_t myIndex,
    , af_{nn::act_fs[activation_function_name].first}
    , af_derivative_{nn::act_fs[activation_function_name].second}
 {
+   // He init for the ReLU family, Glorot/Xavier otherwise.
+   const bool relu_family = activation_function_name == "relu" or
+                            activation_function_name == "leaky_relu";
    for (std::size_t c = 0; c < numOutputs; ++c) {
       outputWeights_.push_back(nndef::connection_t());
-      outputWeights_.back().weight = randomWeight();
+      outputWeights_.back().weight =
+         relu_family ? nn::he_init(fan_in) : nn::xavier_init(fan_in, numOutputs);
    }
 }
 

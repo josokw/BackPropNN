@@ -1,11 +1,14 @@
 #include "TrainingData.h"
+#include "NNconfig.h"
 #include "NNdef.h"
 #include "Neuron.h"
+#include "RNG.h"
 
 #include <algorithm>
 #include <format>
 #include <iostream>
 #include <map>
+#include <random>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -14,6 +17,7 @@ std::ostream &operator<<(std::ostream &os, const TrainingData &trnData)
 {
    os << "momentum (ALPHA): " << trnData.ALPHA << "\n";
    os << "learning rate (ETA): " << trnData.ETA << "\n";
+   os << "RNG seed: " << trnData.seed << "\n";
    os << "topology: \n";
    for (int index = 0; auto layerSize : trnData.topology_) {
       os << "  " << layerSize << "  "
@@ -97,13 +101,14 @@ TrainingData::TrainingData()
    semantic_actions_["out:"] = sa_out;
    semantic_actions_["show_max_inputs:"] = sa_show_max_inputs;
    semantic_actions_["show_max_outputs:"] = sa_show_max_outputs;
+   semantic_actions_["seed:"] = sa_seed;
    semantic_actions_["output_names:"] = sa_output_names;
 }
 
 nndef::in_out_pair_t TrainingData::getRandomChoosenInOut() const
 {
-   auto randomIndex = std::rand() % in_out_all_.size();
-   return in_out_all_[randomIndex];
+   std::uniform_int_distribution<std::size_t> dist{0U, in_out_all_.size() - 1U};
+   return in_out_all_[dist(nn::rng())];
 }
 
 void sa_ALPHA(std::stringstream &lineStream, TrainingData &trainingData)
@@ -220,6 +225,19 @@ void sa_show_max_outputs(std::stringstream &lineStream,
             trainingData.line_));
       }
    }
+}
+
+void sa_seed(std::stringstream &lineStream, TrainingData &trainingData)
+{
+   while (not lineStream.eof() and not lineStream.fail()) {
+      lineStream >> trainingData.seed;
+   }
+   if (lineStream.fail()) {
+      throw std::runtime_error(std::format(
+         "=== ERROR line [{}]: seed must be an integer",
+         trainingData.line_));
+   }
+   nn::seed_rng(trainingData.seed);
 }
 
 void sa_output_names(std::stringstream &lineStream, TrainingData &trainingData)
