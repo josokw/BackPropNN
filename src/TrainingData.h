@@ -1,6 +1,7 @@
 #ifndef TRAININGDATA_H
 #define TRAININGDATA_H
 
+#include "NNconfig.h"
 #include "NNdef.h"
 
 #include <fstream>
@@ -26,9 +27,9 @@ public:
    nndef::in_out_all_pairs_t getInOut() const { return in_out_all_; }
 
    ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
-   double ALPHA{0.5};
+   double ALPHA{DEFAULT_ALPHA};
    ///< Overall net learning rate, [0.0..1.0]
-   double ETA{0.15};
+   double ETA{DEFAULT_ETA};
    ///< Max number of input values showed in a line (2D view)
    int show_max_inputs{0};
    ///< Max number of output values showed in a line (2D view)
@@ -45,8 +46,6 @@ public:
    /// Line number in config file
    size_t line_{0};
 };
-
-inline TrainingData trd;
 
 /// Semantic actions for labels in training data
 /// @todo add more checking correct syntax
