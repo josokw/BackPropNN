@@ -18,13 +18,20 @@ public:
    TrainingData();
    ~TrainingData() = default;
 
-   const nndef::topology_t &getTopology() const { return topology_; }
-   const nndef::activation_function_names_t &getActionFunctionNames() const
+   [[nodiscard]] const nndef::topology_t &getTopology() const
+   {
+      return topology_;
+   }
+   [[nodiscard]] const nndef::activation_function_names_t &
+   getActionFunctionNames() const
    {
       return activation_function_names_;
    }
-   nndef::in_out_pair_t getRandomChoosenInOut() const;
-   nndef::in_out_all_pairs_t getInOut() const { return in_out_all_; }
+   [[nodiscard]] nndef::in_out_pair_t getRandomChoosenInOut() const;
+   [[nodiscard]] nndef::in_out_all_pairs_t getInOut() const
+   {
+      return in_out_all_;
+   }
 
    ///< Momentum, multiplier of last deltaWeight, [0.0..1.0]
    double ALPHA{DEFAULT_ALPHA};

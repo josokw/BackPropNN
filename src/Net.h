@@ -16,11 +16,14 @@ public:
        const nndef::activation_function_names_t &activation_function_names);
    ~Net() = default;
 
-   const auto &topology() const { return topology_; }
+   [[nodiscard]] const auto &topology() const { return topology_; }
    void feedForward(const nndef::values_layer_t &inputVals);
    void backProp(const nndef::values_layer_t &targetVals);
    void getResults(nndef::values_layer_t &resultVals) const;
-   double getRecentAverageError() const { return recentAverageError_; }
+   [[nodiscard]] double getRecentAverageError() const
+   {
+      return recentAverageError_;
+   }
 
 private:
    nndef::topology_t topology_;

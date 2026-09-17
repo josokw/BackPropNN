@@ -21,7 +21,7 @@ public:
    ~Neuron() = default;
 
    void setOutputVal(double val) { outputVal_ = val; }
-   double getOutputVal(void) const { return outputVal_; }
+   [[nodiscard]] double getOutputVal(void) const { return outputVal_; }
    /// Sums the previous layer's outputs (which are our inputs).
    /// Includes the bias node from the previous layer.
    void feedForward(const nndef::neurons_layer_t &prevLayer);
@@ -45,7 +45,7 @@ private:
    /// For randomly initialisation of the weigths. Seed == 1;
    static double randomWeight() { return std::rand() / double(RAND_MAX); }
 
-   double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
+   [[nodiscard]] double sumDOW(const nndef::neurons_layer_t &nextLayer) const;
    double outputVal_;
    std::vector<nndef::connection_t> outputWeights_;
 
