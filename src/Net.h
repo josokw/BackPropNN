@@ -23,8 +23,8 @@ public:
    double getRecentAverageError() const { return recentAverageError_; }
 
 private:
-   const nndef::topology_t &topology_;
-   const nndef::activation_function_names_t &activation_function_names_;
+   nndef::topology_t topology_;
+   nndef::activation_function_names_t activation_function_names_;
    nndef::neurons_all_layers_t layers_; // layers_[layerNum][neuronNum]
    double RMSerror_;
    double recentAverageError_;
