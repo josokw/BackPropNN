@@ -1,0 +1,113 @@
+# training5x5-10c.txt
+
+# NN for classification and counting (11): pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+
+momentum: 0.2
+learning_rate: 0.005
+
+topology: 25      12    10    9    11
+actionfs: inputs  tanh  tanh  tanh leaky_relu
+
+# solid
+in: 1.0 1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0 1.0  1.0 1.0 1.0 1.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 1.0    1.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# empty
+in: 0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.0    0.0    1.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# vertical col0
+in: 1.0 0.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   1.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# vertical col1
+in: 0.0 1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   1.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# vertical col2
+in: 0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   1.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# vertical col3
+in: 0.0 0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   1.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# vertical col4
+in: 0.0 0.0 0.0 0.0 1.0  0.0 0.0 0.0 0.0 1.0  0.0 0.0 0.0 0.0 1.0  0.0 0.0 0.0 0.0 1.0  0.0 0.0 0.0 0.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   1.0        0.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# horizontal row0
+in: 1.0 1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        1.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# horizontal row1
+in: 0.0 0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        1.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# horizontal row2
+in: 0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        1.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# horizontal row3
+in: 0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0 1.0  0.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        1.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# horizontal row4
+in: 0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  0.0 0.0 0.0 0.0 0.0  1.0 1.0 1.0 1.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        1.0        0.0        0.0      0.0  0.0  0.0     0.0
+
+# diagonal main (top-left to bottom-right)
+in: 1.0 0.0 0.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 0.0 0.0 1.0 0.0  0.0 0.0 0.0 0.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        0.0        1.0        0.0      0.0  0.0  0.0     0.0
+
+# diagonal anti (top-right to bottom-left)
+in: 0.0 0.0 0.0 0.0 1.0  0.0 0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 1.0 0.0 0.0 0.0  1.0 0.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.2    0.0    0.0   0.0        0.0        0.0        1.0      0.0  0.0  0.0     0.0
+
+# X (both diagonals)
+in: 1.0 0.0 0.0 0.0 1.0  0.0 1.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0 0.0  0.0 1.0 0.0 1.0 0.0  1.0 0.0 0.0 0.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.36   0.0    0.0   0.0        0.0        0.0        0.0      1.0  0.0  0.0     0.0
+
+# cross (+)
+in: 0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0  1.0 1.0 1.0 1.0 1.0  0.0 0.0 1.0 0.0 0.0  0.0 0.0 1.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.36   0.0    0.0   0.0        0.0        0.0        0.0      0.0  1.0  0.0     0.0
+
+# border
+in: 1.0 1.0 1.0 1.0 1.0  1.0 0.0 0.0 0.0 1.0  1.0 0.0 0.0 0.0 1.0  1.0 0.0 0.0 0.0 1.0  1.0 1.0 1.0 1.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.64   0.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  1.0     0.0
+
+# noise
+in: 1.0 0.0 1.0 0.0 0.0  0.0 1.0 0.0 0.0 1.0  0.0 1.0 1.0 0.0 0.0  1.0 0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.4    0.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0     1.0
+
+# noise
+in: 0.0 1.0 0.0 0.0 0.0  1.0 1.0 0.0 1.0 0.0  0.0 0.0 0.0 1.0 1.0  1.0 0.0 1.0 0.0 0.0  0.0 1.0 0.0 1.0 1.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.44   0.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0     1.0
+
+# noise
+in: 0.0 0.0 0.0 1.0 1.0  0.0 1.0 1.0 0.0 0.0  1.0 0.0 0.0 1.0 0.0  0.0 0.0 1.0 0.0 1.0  1.0 1.0 0.0 0.0 0.0
+#    pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+out: 0.4    0.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0     1.0
+
+show_max_inputs: 5
+show_max_outputs: 1
+output_names: pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
