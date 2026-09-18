@@ -31,7 +31,6 @@ The refactoring has already applied a number of modern C++ techniques:
   family, replacing the non-centred uniform `[0, 1)` default. A fixed seed
   makes training runs reproducible.
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2cd688b1e3984f63b00fdee04e7dac4b)](https://www.codacy.com/project/josokw/BackPropNN/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=josokw/BackPropNN&amp;utm_campaign=Badge_Grade_Dashboard)
 [![CodeFactor](https://www.codefactor.io/repository/github/josokw/backpropnn/badge)](https://www.codefactor.io/repository/github/josokw/backpropnn)
 
 ## Compiling
