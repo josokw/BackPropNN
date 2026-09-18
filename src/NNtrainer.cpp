@@ -8,12 +8,19 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <utility>
 #include <vector>
 
 NNtrainer::NNtrainer(Net &net, TrainingData &trainingData)
    : net_{net}
    , trainingData_{trainingData}
+   , observer_{nullptr}
 {
+}
+
+void NNtrainer::setObserver(std::shared_ptr<NNtrainerObserver> observer)
+{
+   observer_ = std::move(observer);
 }
 
 void NNtrainer::train()
@@ -38,35 +45,33 @@ void NNtrainer::train()
       const auto [inputVals, targetVals] =
          trainingData_.getRandomChoosenInOut();
 
-      if (do_show(trainingPass_, net_.getRecentAverageError())) {
+      const bool show = do_show(trainingPass_, net_.getRecentAverageError());
+
+      if (not observer_ and show) {
          std::cout << "\n-- Pass " << trainingPass_;
          showVectorVals("\nInputs: ", inputVals);
          std::cout << net_;
       }
 
       net_.feedForward(inputVals);
-      // Collect the net's actual output results:
       net_.getResults(resultVals);
 
-      if (do_show(trainingPass_, net_.getRecentAverageError())) {
+      assert(targetVals.size() == net_.topology().back());
+
+      if (observer_) {
+         observer_->onPass(trainingPass_, show, net_, inputVals, resultVals,
+                           targetVals);
+      } else if (show) {
          showVectorVals("Outputs:", resultVals);
-         // Train the net what the outputs should have been:
          showVectorVals("Targets:", targetVals);
-         assert(targetVals.size() == net_.topology().back());
-      }
-
-      /// @todo Check call to net_.backProp(targetVals);
-      // net_.backProp(targetVals);
-
-      if (do_show(trainingPass_, net_.getRecentAverageError())) {
-         // Report how well the training is working, average over recent
-         // samples:
-         // std::cout << "Net recent average error: "
-         //           << net_.getRecentAverageError() << std::endl;
       }
 
       net_.backProp(targetVals);
-      // std::cout << net_;
+   }
+
+   if (observer_) {
+      observer_->onFinished(net_);
+      return;
    }
 
    const auto t_ready = std::chrono::high_resolution_clock::now();

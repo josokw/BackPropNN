@@ -153,3 +153,46 @@ XOR  +0.983
 ===> 
 XOR  +0.020 
 ```
+
+## Live training dashboard (TUI)
+
+When run on a real terminal, the executable renders a live in-place dashboard
+powered by [FTXUI](https://github.com/ArthurSonzogni/FTXUI). The dashboard
+shows the network settings, iteration progress, average error gauge, the current
+input sample as a 2-D heat grid, and a per-sample class verdict:
+
+```bash
+# on a real terminal (auto-detected)
+./backpropnn ../data/trainingXOR.txt
+```
+
+The classic plain-text output (useful for scripts and logs) is automatically
+used when stdout is **piped or redirected**:
+
+```bash
+./backpropnn ../data/trainingXOR.txt > results.txt   # classic output
+```
+
+### Runtime control
+
+The dashboard can be forced on or off at run time with the `BPNN_TUI`
+environment variable:
+
+| Value | Behaviour |
+|-------|-----------|
+| `BPNN_TUI=0` | Always use classic plain-text output |
+| `BPNN_TUI=1` | Always render the TUI (even when piped) |
+| *(unset)* | Auto: TUI on a terminal, classic when piped |
+
+### Build without FTXUI
+
+FTXUI is pulled automatically via `FetchContent` during a CMake build.
+To build **without** the dependency and the dashboard:
+
+```bash
+cmake -DBPNN_TUI=OFF ..
+make -j
+```
+
+The standalone Makefile (`make -C src`) also compiles cleanly without FTXUI;
+the TUI code compiles to a no-op.

@@ -8,11 +8,13 @@
 #include "Net.h"
 #include "OSstate.h"
 #include "TrainingData.h"
+#include "Tui.h"
 
 #include <algorithm>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -39,6 +41,8 @@ int main(int argc, char *argv[])
 
    std::cout << "*** config file: " << argv[1] << "\n\n";
 
+   bool tuiActive = false;
+
    try {
       TrainingData trainingData;
 
@@ -49,9 +53,19 @@ int main(int argc, char *argv[])
                 trainingData.getActionFunctionNames()};
       NNtrainer nntr{myNet, trainingData};
 
+#ifdef BPNN_TUI
+      if (tui::Dashboard::wantsTui()) {
+         nntr.setObserver(
+            std::make_shared<tui::Dashboard>(myNet, trainingData));
+         tuiActive = true;
+      }
+#endif
+
       nntr.train();
 
-      showInOut("\n- Results after training:", trainingData, myNet);
+      if (not nntr.hasObserver()) {
+         showInOut("\n- Results after training:", trainingData, myNet);
+      }
    }
    catch (std::exception &e) {
       std::cerr << "ERROR: " << e.what() << "\n";
@@ -62,7 +76,12 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
    }
 
-   std::cout << "\n*** " APPNAME_VERSION " ready\n\n";
+   if (tuiActive) {
+      // The dashboard repaints in place; leave a clean line for the shell.
+      std::cout << "\n\n";
+   } else {
+      std::cout << "\n*** " APPNAME_VERSION " ready\n\n";
+   }
 
    return 0;
 }
