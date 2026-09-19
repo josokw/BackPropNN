@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 #ifdef BPNN_TUI
       if (tui::Dashboard::wantsTui()) {
          nntr.setObserver(
-            std::make_shared<tui::Dashboard>(myNet, trainingData));
+            std::make_shared<tui::Dashboard>(myNet, trainingData, argv[1]));
          tuiActive = true;
       }
 #endif

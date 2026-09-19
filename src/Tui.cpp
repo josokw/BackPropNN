@@ -51,9 +51,10 @@ std::size_t argmaxIndex(const nndef::values_layer_t &v)
 } // namespace
 
 Dashboard::Dashboard(Net &net, const TrainingData &trnData,
-                     std::size_t renderEvery)
+                     std::string inputFileName, std::size_t renderEvery)
    : net_{net}
    , trnData_{trnData}
+   , inputFileName_{std::move(inputFileName)}
    , renderEvery_{std::max<std::size_t>(renderEvery, 1)}
    , lastInputs_{}
    , lastResults_{}
@@ -116,9 +117,10 @@ void Dashboard::render(Net &net)
 
    // --- header bar -------------------------------------------------------
    const auto header = hbox({
-      text(" " APPNAME_VERSION) | bold | color(Color::Green),
+      text(" " APPNAME_VERSION " ") | bold | color(Color::Green),
       separator(),
-      text("live training") | dim,
+      text("live training: ") | dim,
+      text(inputFileName_) | bold | color(Color::Yellow),
       filler(),
       text(std::format("pass {}   avg error {:.6f}", lastPass_,
                        net.getRecentAverageError())) | dim,
@@ -152,7 +154,7 @@ void Dashboard::render(Net &net)
    const double errFrac = std::clamp(
       (0.5 - avgErr) / (0.5 - MIN_RECENT_AVERAGE_ERROR), 0.0, 1.0);
    const auto training = window(
-      panel(finished_ ? "Training  (done)" : "Training"),
+      panel(finished_ ? "Training (done)" : "Training"),
       vbox({
          row("Pass", std::format("{} / {}", lastPass_, MAX_ITERATIONS)),
          hbox({text("Iterations") | dim, filler(),

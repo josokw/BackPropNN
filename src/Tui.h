@@ -18,6 +18,7 @@ class Dashboard final : public NNtrainerObserver
 {
 public:
    Dashboard(Net &net, const TrainingData &trnData,
+             std::string inputFileName = {},
              std::size_t renderEvery = 50);
    ~Dashboard() override = default;
 
@@ -35,6 +36,7 @@ private:
 
    Net &net_;
    const TrainingData &trnData_;
+   std::string inputFileName_;
    std::size_t renderEvery_;
    std::size_t lastPass_{0};
    bool finished_{false};
