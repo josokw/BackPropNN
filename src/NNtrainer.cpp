@@ -70,7 +70,9 @@ void NNtrainer::train()
    }
 
    if (observer_) {
-      observer_->onFinished(net_);
+      const auto t_ready = std::chrono::high_resolution_clock::now();
+      const std::chrono::duration<double, std::milli> ms = t_ready - t_start;
+      observer_->onFinished(net_, ms.count());
       return;
    }
 

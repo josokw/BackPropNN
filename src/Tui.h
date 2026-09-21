@@ -29,7 +29,7 @@ public:
                const nndef::values_layer_t &inputVals,
                const nndef::values_layer_t &resultVals,
                const nndef::values_layer_t &targetVals) override;
-   void onFinished(Net &net) override;
+   void onFinished(Net &net, double elapsedMs = 0) override;
 
 private:
    void render(Net &net);
@@ -39,6 +39,7 @@ private:
    std::string inputFileName_;
    std::size_t renderEvery_;
    std::size_t lastPass_{0};
+   double elapsedMs_{0.0};
    bool finished_{false};
    nndef::values_layer_t lastInputs_;
    nndef::values_layer_t lastResults_;

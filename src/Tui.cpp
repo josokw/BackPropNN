@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <unistd.h>
@@ -91,9 +92,10 @@ void Dashboard::onPass(std::size_t pass, bool show, Net &net,
    }
 }
 
-void Dashboard::onFinished(Net &net)
+void Dashboard::onFinished(Net &net, double elapsedMs)
 {
    finished_ = true;
+   elapsedMs_ = elapsedMs;
    render(net);
 }
 
@@ -153,16 +155,21 @@ void Dashboard::render(Net &net)
       0.0, 1.0);
    const double errFrac = std::clamp(
       (0.5 - avgErr) / (0.5 - MIN_RECENT_AVERAGE_ERROR), 0.0, 1.0);
+   std::vector<Element> trainingRows{
+      row("Pass", std::format("{} / {}", lastPass_, MAX_ITERATIONS)),
+      hbox({text("Iterations") | dim, filler(),
+            gauge(passFrac) | color(Color::Blue)}),
+      row("Average error", std::format("{:.6f}", avgErr)),
+      hbox({text("Error target") | dim, filler(),
+            gauge(errFrac) | color(Color::Green)}),
+   };
+   if (finished_) {
+      trainingRows.push_back(
+         row("Elapsed", std::format("{:.1f} ms", elapsedMs_)));
+   }
    const auto training = window(
       panel(finished_ ? "Training (done)" : "Training"),
-      vbox({
-         row("Pass", std::format("{} / {}", lastPass_, MAX_ITERATIONS)),
-         hbox({text("Iterations") | dim, filler(),
-               gauge(passFrac) | color(Color::Blue)}),
-         row("Average error", std::format("{:.6f}", avgErr)),
-         hbox({text("Error target") | dim, filler(),
-               gauge(errFrac) | color(Color::Green)}),
-      }));
+      vbox(std::move(trainingRows)));
 
    // --- current sample panel --------------------------------------------------
    const std::size_t gridCols =

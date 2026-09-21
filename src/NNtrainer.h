@@ -22,7 +22,11 @@ public:
                        const nndef::values_layer_t &targetVals) = 0;
 
    /// Called when the training loop has terminated.
-   virtual void onFinished(Net &net) { (void)net; }
+   virtual void onFinished(Net &net, double elapsedMs = 0)
+   {
+      (void)net;
+      (void)elapsedMs;
+   }
 };
 
 /// Class NNtrainer manages the training of a backprop NN.
