@@ -21,8 +21,14 @@ public:
           std::size_t fan_in = 0);
    ~Neuron() = default;
 
-   void setOutputVal(double val) { outputVal_ = val; }
-   [[nodiscard]] double getOutputVal(void) const { return outputVal_; }
+void setOutputVal(double val) { outputVal_ = val; }
+    [[nodiscard]] double getOutputVal(void) const { return outputVal_; }
+    ///< Weights of the connections to the next layer, one per outgoing neuron.
+    [[nodiscard]] const std::vector<nndef::connection_t> &
+    getOutputWeights() const noexcept
+    {
+       return outputWeights_;
+    }
    /// Sums the previous layer's outputs (which are our inputs).
    /// Includes the bias node from the previous layer.
    void feedForward(const nndef::neurons_layer_t &prevLayer);

@@ -45,13 +45,12 @@ public:
    /// a plain-text summary once the session ends (also on 'q'/Esc).
    void run(NNtrainer &trainer);
 
-   void onPass(std::size_t pass, bool show, Net &net,
+void onPass(std::size_t pass, bool show, Net &net,
                const nndef::values_layer_t &inputVals,
                const nndef::values_layer_t &resultVals,
                const nndef::values_layer_t &targetVals) override;
    void onFinished(Net &net, double elapsedMs = 0) override;
 
-private:
    /// Immutable snapshot of the training state, produced by the trainer thread
    /// under mutex_ and consumed by the UI thread for rendering.
    struct Snapshot
@@ -66,6 +65,10 @@ private:
       nndef::values_layer_t inputs;
       nndef::values_layer_t results;
       nndef::values_layer_t targets;
+      ///< L0->L1 fan-in weights per hidden neuron.
+      std::vector<std::vector<double>> features;
+      ///< max |weight| across the features.
+      double featuresScale{1.0};
       std::vector<std::pair<std::size_t, double>> errorHistory;
       std::size_t correctCount{0};
       std::size_t totalCount{0};
@@ -75,25 +78,35 @@ private:
       bool rateValid{false};
    };
 
+private:
    void printSummary() const;
+
 #ifdef BPNN_TUI
-   ftxui::Element buildDocument(const Snapshot &snapshot, bool paused, int plotW,
-                                int plotH);
+   ftxui::Element buildDocument(const Snapshot &snapshot, bool paused, int W,
+                                int H, bool showHelp);
 #endif
 
    Snapshot snapshot_{};
    mutable std::mutex mutex_{};
 
-   Net &net_;
+Net &net_;
    const TrainingData &trnData_;
    std::string inputFileName_;
    std::size_t renderEvery_{50};
+
+   /// Vertical scroll offset of the dashboard body (UI thread only).
+   int scrollOffset_{0};
+   /// Whether the `h`/`?` help overlay is visible (UI thread only).
+   bool showHelp_{false};
 
 #ifdef BPNN_TUI
    ftxui::ScreenInteractive *screen_{nullptr};
    std::atomic<bool> loopReady_{false};
    std::atomic<bool> requestedInterrupt_{false};
    std::atomic<bool> activate_{false};
+   /// Incremented on every published snapshot; the refresher repaints only
+   /// when this changes (keeps a paused dashboard idle).
+   std::atomic<std::size_t> revision_{0};
 #endif
 };
 

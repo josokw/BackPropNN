@@ -17,6 +17,8 @@ public:
    ~Net() = default;
 
    [[nodiscard]] const auto &topology() const { return topology_; }
+    ///< The neuron layers (layer 0 = inputs ... layer n = outputs).
+    [[nodiscard]] const auto &layers() const { return layers_; }
    void feedForward(const nndef::values_layer_t &inputVals);
    void backProp(const nndef::values_layer_t &targetVals);
    void getResults(nndef::values_layer_t &resultVals) const;

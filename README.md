@@ -178,14 +178,21 @@ powered by [FTXUI](https://github.com/ArthurSonzogni/FTXUI), driven by an
 FTXUI event loop on the main thread while the trainer runs on a background
 thread. The dashboard shows the network settings, iteration progress with a
 passes-per-second speed and ETA, average/best error gauges, a semi-log
-error-history plot, the current input sample as a 2-D *viridis* colour heat
-grid, per-sample output magnitude bars, a live accuracy score, and a
-RUNNING/PAUSED/DONE status badge:
+error-history plot (with `best`/`now` markers), the current input sample as a
+2-D *viridis* colour heat grid, per-sample output magnitude bars, a live
+accuracy score, a **weight heat map** of the L0→L1 connections (on wide
+terminals), and a RUNNING/PAUSED/DONE status badge:
 
 ```bash
 # on a real terminal (auto-detected), ideally ≥ 40 rows
 ./backpropnn ../data/trainingXOR.txt
 ```
+
+The layout is responsive: the plot and settings panels resize with the
+terminal, the *Features L0-L1* weight heat map appears when the terminal is
+wider than 130 columns, and the whole dashboard scrolls when the content is
+taller than the terminal (or via the mouse wheel). Press `h`/`?` for an
+in-terminal help overlay listing every key.
 
 The classic plain-text output (useful for scripts and logs) is automatically
 used when stdout is **piped or redirected**:
@@ -200,6 +207,8 @@ used when stdout is **piped or redirected**:
 |-----|--------|
 | `q`, `Esc` | Stop training (if still running), leave the dashboard, print a one-line summary |
 | `p`, `Space` | Pause / resume training (shown in the status badge) |
+| `h`, `?` | Toggle the in-terminal help overlay |
+| `↑`/`↓`, `j`/`k`, `PgUp`/`PgDn`, `Home`/`End`, mouse wheel | Scroll the dashboard when its content overflows the terminal |
 | `+`, `=` | Render the dashboard half as often (fewer passes between redraws) |
 | `-`, `_` | Render twice as often (more passes between redraws) |
 
