@@ -92,7 +92,7 @@ private:
 Net &net_;
    const TrainingData &trnData_;
    std::string inputFileName_;
-   std::size_t renderEvery_{50};
+   std::atomic<std::size_t> renderEvery_{50};
 
    /// Vertical scroll offset of the dashboard body (UI thread only).
    int scrollOffset_{0};

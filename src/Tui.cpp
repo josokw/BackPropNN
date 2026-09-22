@@ -62,6 +62,20 @@ std::size_t argmaxIndex(const nndef::values_layer_t &v)
       std::distance(v.begin(), std::max_element(v.begin(), v.end())));
 }
 
+constexpr double kMatchTolerance = 0.5;
+
+bool matchesTarget(const nndef::values_layer_t &result,
+                   const nndef::values_layer_t &target)
+{
+   if (target.size() >= 2) {
+      return argmaxIndex(result) == argmaxIndex(target);
+   }
+   if (target.size() == 1 and result.size() == 1) {
+      return std::abs(result[0] - target[0]) < kMatchTolerance;
+   }
+   return false;
+}
+
 /// Viridis-like colour ramp for t in [0.0, 1.0].
 ftxui::Color viridis(double t)
 {
@@ -380,13 +394,14 @@ void Dashboard::onPass(std::size_t pass, bool show, Net &net,
    }
 
    ++s.totalCount;
-   if (resultVals.size() == targetVals.size() and not resultVals.empty() and
-       argmaxIndex(resultVals) == argmaxIndex(targetVals)) {
+   if (matchesTarget(resultVals, targetVals)) {
       ++s.correctCount;
    }
 
    // Down-sampled rolling error history (decimate when it gets too large).
-   if (pass % s.renderEvery == 0) {
+   const std::size_t every = renderEvery_.load(std::memory_order_relaxed);
+   s.renderEvery = every;
+   if (pass % every == 0) {
       s.errorHistory.emplace_back(pass, s.avgError);
       while (s.errorHistory.size() > MAX_HISTORY_POINTS) {
          std::vector<std::pair<std::size_t, double>> decimated;
@@ -626,9 +641,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
       }));
    }
 
-   const bool correct = not s.results.empty() and
-                        s.results.size() == s.targets.size() and
-                        argmaxIndex(s.results) == argmaxIndex(s.targets);
+   const bool correct = matchesTarget(s.results, s.targets);
    std::string className;
    if (not s.targets.empty()) {
       const auto idx = argmaxIndex(s.targets);
@@ -754,8 +767,8 @@ void Dashboard::run(NNtrainer &trainer)
    {
       std::lock_guard<std::mutex> lock(mutex_);
       snapshot_ = Snapshot{};
-      snapshot_.renderEvery = renderEvery_;
    }
+   renderEvery_.store(renderEvery_, std::memory_order_relaxed);
    activate_.store(true, std::memory_order_relaxed);
    revision_.store(0, std::memory_order_relaxed);
 
@@ -801,11 +814,10 @@ void Dashboard::run(NNtrainer &trainer)
                               static_cast<int>(dim.dimx),
                               static_cast<int>(dim.dimy), showHelp_);
       }),
-      [this, &trainer, &keepRefreshing, &trainerThread, &refresher,
-       &scrollBy](Event event) {
-         // Only the main loop thread ever exits the screen, and the worker
-         // threads are joined first so no PostEvent from a background thread
-         // can race with FTXUI's internal teardown.
+      [this, &trainer, &keepRefreshing, &scrollBy](Event event) {
+         // Only the main loop thread ever exits the screen; the worker
+         // threads are left running and reaped by join() after Loop returns,
+         // so no PostEvent from a background thread races FTXUI's teardown.
          if (event == Event::Custom) {
             bool finished = false;
             {
@@ -816,9 +828,6 @@ void Dashboard::run(NNtrainer &trainer)
                // Training is done: stop repainting, but keep the final
                // DONE dashboard on screen until the user quits with q/Escape.
                keepRefreshing.store(false, std::memory_order_relaxed);
-               if (refresher.joinable()) {
-                  refresher.join();
-               }
             }
             return true;
          }
@@ -866,12 +875,6 @@ void Dashboard::run(NNtrainer &trainer)
             requestedInterrupt_.store(true, std::memory_order_relaxed);
             trainer.requestStop();
             keepRefreshing.store(false, std::memory_order_relaxed);
-            if (trainerThread.joinable()) {
-               trainerThread.join();
-            }
-            if (refresher.joinable()) {
-               refresher.join();
-            }
             if (screen_) {
                screen_->Exit();
             }
@@ -882,17 +885,18 @@ void Dashboard::run(NNtrainer &trainer)
             trainer.setPaused(not trainer.isPaused());
             return true;
          }
-         if (event == Event::Character('+') or
-             event == Event::Character('=')) {
-            renderEvery_ = std::min<std::size_t>(renderEvery_ * 2, 100'000);
-            std::lock_guard<std::mutex> lock(mutex_);
-            snapshot_.renderEvery = renderEvery_;
+         if (event == Event::Character('+') or event == Event::Character('=')) {
+            renderEvery_.store(
+               std::min<std::size_t>(
+                  renderEvery_.load(std::memory_order_relaxed) * 2, 100'000),
+               std::memory_order_relaxed);
             return true;
          }
          if (event == Event::Character('-') or event == Event::Character('_')) {
-            renderEvery_ = std::max<std::size_t>(1, renderEvery_ / 2);
-            std::lock_guard<std::mutex> lock(mutex_);
-            snapshot_.renderEvery = renderEvery_;
+            renderEvery_.store(
+               std::max<std::size_t>(
+                  1, renderEvery_.load(std::memory_order_relaxed) / 2),
+               std::memory_order_relaxed);
             return true;
          }
          return false;

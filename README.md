@@ -217,7 +217,7 @@ badge until you press `q`/`Esc`. On exit (naturally or with `q`) a summary is
 printed, e.g.:
 
 ```
-- Training done: 1802 passes, avg error 0.030075, best error 0.030075, 33.7 ms, accuracy 100.0% (1802/1802)
+- Training done: 1802 passes, avg error 0.030075, best error 0.030075, 13.5 ms, accuracy 97.6% (1759/1802)
 ```
 
 `q`/`Esc` prints the same line with an `(interrupted)` marker and the elapsed
