@@ -69,10 +69,10 @@ void Neuron::updateInputWeights(nndef::neurons_layer_t &prevLayer)
 double Neuron::sumDOW(const nndef::neurons_layer_t &nextLayer) const
 {
    double sum = 0.0;
-   // Sum our contributions of the errors at the nodes we feed.
-   for (size_t n = 0; auto &neuron : nextLayer) {
-      sum += outputWeights_[n].weight * neuron.gradient_;
-      ++n;
+   // Sum our contributions of the errors at the real nodes we feed
+   // (the next layer's bias neuron has no incoming weights).
+   for (std::size_t n = 0; n < nextLayer.size() - 1; ++n) {
+      sum += outputWeights_[n].weight * nextLayer[n].gradient_;
    }
    return sum;
 }

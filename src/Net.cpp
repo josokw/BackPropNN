@@ -86,9 +86,9 @@ void Net::backProp(const nndef::values_layer_t &targetVals)
       (recentAverageError_ * recentAverageSmoothingFactor_ + RMSerror_) /
       (recentAverageSmoothingFactor_ + 1.0);
 
-   // Calculate output layer gradients
-   for (size_t n = 0; auto &neuron : outputLayer) {
-      neuron.calcOutputGradients(targetVals[n++]);
+   // Calculate output layer gradients (bias neuron has no target).
+   for (std::size_t n = 0; n < outputLayer.size() - 1; ++n) {
+      outputLayer[n].calcOutputGradients(targetVals[n]);
    }
 
    // Calculate hidden layer gradients

@@ -34,6 +34,7 @@ if(BPNN_TUI)
         ftxui
         URL https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v5.0.0.tar.gz
         DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+        PATCH_COMMAND patch -p1 -i ${CMAKE_CURRENT_LIST_DIR}/cmake/ftxui-v5.0.0-canvas-negative-size.patch
     )
     set(FTXUI_BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(FTXUI_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
@@ -55,5 +56,5 @@ add_executable(backpropnn ${BPNN_SOURCES})
 
 if(BPNN_TUI)
     target_compile_definitions(backpropnn PRIVATE BPNN_TUI=1)
-    target_link_libraries(backpropnn PRIVATE ftxui::dom ftxui::screen)
+    target_link_libraries(backpropnn PRIVATE ftxui::component ftxui::dom ftxui::screen)
 endif()

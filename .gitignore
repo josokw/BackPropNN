@@ -53,3 +53,5 @@ html
 # Local History for Visual Studio Code
 .history/
 
+# Graphify
+graphify-out/

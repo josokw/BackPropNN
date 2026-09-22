@@ -8,6 +8,7 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
+#include <thread>
 #include <utility>
 #include <vector>
 
@@ -39,6 +40,19 @@ void NNtrainer::train()
 
    while (trainingPass_ < MAX_ITERATIONS &&
           net_.getRecentAverageError() > MIN_RECENT_AVERAGE_ERROR) {
+      if (cancel_.load(std::memory_order_relaxed)) {
+         break;
+      }
+      while (paused_.load(std::memory_order_relaxed)) {
+         if (cancel_.load(std::memory_order_relaxed)) {
+            break;
+         }
+         std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      }
+      if (cancel_.load(std::memory_order_relaxed)) {
+         break;
+      }
+
       ++trainingPass_;
 
       nndef::values_layer_t resultVals;

@@ -55,13 +55,17 @@ int main(int argc, char *argv[])
 
 #ifdef BPNN_TUI
       if (tui::Dashboard::wantsTui()) {
-         nntr.setObserver(
-            std::make_shared<tui::Dashboard>(myNet, trainingData, argv[1]));
+         auto dashboard =
+            std::make_shared<tui::Dashboard>(myNet, trainingData, argv[1]);
+         nntr.setObserver(dashboard);
          tuiActive = true;
+         dashboard->run(nntr);
       }
 #endif
 
-      nntr.train();
+      if (not tuiActive) {
+         nntr.train();
+      }
 
       if (not nntr.hasObserver()) {
          showInOut("\n- Results after training:", trainingData, myNet);
@@ -76,12 +80,7 @@ int main(int argc, char *argv[])
       return EXIT_FAILURE;
    }
 
-   if (tuiActive) {
-      // The dashboard repaints in place; leave a clean line for the shell.
-      std::cout << "\n\n";
-   } else {
-      std::cout << "\n*** " APPNAME_VERSION " ready\n\n";
-   }
+   std::cout << "\n*** " APPNAME_VERSION " ready\n\n";
 
    return 0;
 }
