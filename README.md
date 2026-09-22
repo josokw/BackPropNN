@@ -8,7 +8,17 @@
   
 ## Simulation
 
-Training sets: XOR, OR, AND, AND3, NAND and more can  be found in text files in the *data* sub directory.
+Training sets live as plain-text files in the *data* sub directory, grouped into
+families of related tasks:
+
+- **Boolean gates**: XOR, OR, AND, NAND, AND3.
+- **Grid pattern classification**: 2×2, 3×3, 4×4 and 5×5 pixel grids that
+  classify solid / vertical / diagonal / horizontal / X / cross patterns (the
+  larger grids also count solid pixels and detect noise).
+- **Bit counting**: count the number of high bits in the (scaled) input.
+
+Every set uses the same script format shown below, so a file can be swapped in
+without touching code.
 
 ## Refactoring to Modern C++
 
@@ -26,6 +36,9 @@ The refactoring has already applied a number of modern C++ techniques:
 - RAII via *OSstate* to restore stream formatting flags automatically.
 - `std::format` for error messages.
 - Errors reported through `std::runtime_error` exceptions instead of `exit()`.
+- Backpropagation correctly skips the bias neurons: the output layer's bias
+  has no target value and the next layer's bias has no incoming weights, so
+  `backProp()` and `sumDOW()` iterate only the real neurons.
 - Weight initialisation uses a seeded Mersenne Twister (`std::mt19937`) with
   Glorot/Xavier init for `tanh`/`sigmoid` layers and He init for the ReLU
   family, replacing the non-centred uniform `[0, 1)` default. A fixed seed
@@ -43,6 +56,10 @@ Go to the *build* directory and type:
 cmake ..
 make -j
 ```
+
+FTXUI (v5.0.0) is pulled automatically via `FetchContent` and patched for a
+canvas negative-size crash (patch in *cmake/*); the dashboard also links
+`ftxui::component`.
 
 The executable *backpropnn* is written to the *bin* directory.
 
@@ -156,13 +173,17 @@ XOR  +0.020
 
 ## Live training dashboard (TUI)
 
-When run on a real terminal, the executable renders a live in-place dashboard
-powered by [FTXUI](https://github.com/ArthurSonzogni/FTXUI). The dashboard
-shows the network settings, iteration progress, average error gauge, the current
-input sample as a 2-D heat grid, and a per-sample class verdict:
+When run on a real terminal, the executable renders a live interactive dashboard
+powered by [FTXUI](https://github.com/ArthurSonzogni/FTXUI), driven by an
+FTXUI event loop on the main thread while the trainer runs on a background
+thread. The dashboard shows the network settings, iteration progress with a
+passes-per-second speed and ETA, average/best error gauges, a semi-log
+error-history plot, the current input sample as a 2-D *viridis* colour heat
+grid, per-sample output magnitude bars, a live accuracy score, and a
+RUNNING/PAUSED/DONE status badge:
 
 ```bash
-# on a real terminal (auto-detected)
+# on a real terminal (auto-detected), ideally ≥ 40 rows
 ./backpropnn ../data/trainingXOR.txt
 ```
 
@@ -172,6 +193,26 @@ used when stdout is **piped or redirected**:
 ```bash
 ./backpropnn ../data/trainingXOR.txt > results.txt   # classic output
 ```
+
+### Interactive keys
+
+| Key | Action |
+|-----|--------|
+| `q`, `Esc` | Stop training (if still running), leave the dashboard, print a one-line summary |
+| `p`, `Space` | Pause / resume training (shown in the status badge) |
+| `+`, `=` | Render the dashboard half as often (fewer passes between redraws) |
+| `-`, `_` | Render twice as often (more passes between redraws) |
+
+When training ends on its own, the dashboard stays on screen showing the DONE
+badge until you press `q`/`Esc`. On exit (naturally or with `q`) a summary is
+printed, e.g.:
+
+```
+- Training done: 1802 passes, avg error 0.030075, best error 0.030075, 33.7 ms, accuracy 100.0% (1802/1802)
+```
+
+`q`/`Esc` prints the same line with an `(interrupted)` marker and the elapsed
+wall-clock time.
 
 ### Runtime control
 
