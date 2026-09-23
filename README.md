@@ -1,7 +1,7 @@
 # Back Propagation Neural Network
 
 > Full usage, build, TUI, format and troubleshooting reference:
-> **[User Manual — docs/USER_MANUAL.md](docs/USER_MANUAL.md)**
+> **[User Manual — manual/USER_MANUAL.md](manual/USER_MANUAL.md)**
 
 - The goal of any **supervised learning algorithm** is to find a function that best maps a set of inputs to their correct output. The motivation for backpropagation is to train a multi-layered neural network such that it can learn the appropriate internal representations to allow it to learn any arbitrary mapping of input to output. See [Wikipedia](https://en.wikipedia.org/wiki/Backpropagation) and [Neural Network Architectures & Deep Learning](https://www.youtube.com/results?search_query=neural+network+types+overview).
   
