@@ -114,8 +114,8 @@ ftxui::Element outBar(double value, double target)
    }
    const double span = (hi - lo) > 1e-12 ? (hi - lo) : 1.0;
    const auto col = [&](double v) {
-      return static_cast<int>(std::lround((v - lo) / span *
-                                          static_cast<double>(N - 1)));
+      return static_cast<int>(
+         std::lround((v - lo) / span * static_cast<double>(N - 1)));
    };
 
    Elements parts;
@@ -140,9 +140,9 @@ ftxui::Element outBar(double value, double target)
 }
 
 /// Error-history line plot on a braille canvas (semi-log y axis).
-ftxui::Element errorPlot(
-   const std::vector<std::pair<std::size_t, double>> &history,
-   double bestError, int W, int H)
+ftxui::Element
+errorPlot(const std::vector<std::pair<std::size_t, double>> &history,
+          double bestError, int W, int H)
 {
    using namespace ftxui;
    const auto clampI = [](int v, int a, int b) { return std::clamp(v, a, b); };
@@ -154,24 +154,18 @@ ftxui::Element errorPlot(
 
       const Color trace{Color::RGB(33, 145, 140)};
 
-      const auto finiteOf = [](double v) {
-         return std::isfinite(v) ? v : 0.5;
-      };
+      const auto finiteOf = [](double v) { return std::isfinite(v) ? v : 0.5; };
       const auto minErr = std::min_element(
-         history.begin(), history.end(),
-         [&](const auto &a, const auto &b) {
+         history.begin(), history.end(), [&](const auto &a, const auto &b) {
             return finiteOf(a.second) < finiteOf(b.second);
          });
       const auto maxErr = std::max_element(
-         history.begin(), history.end(),
-         [&](const auto &a, const auto &b) {
+         history.begin(), history.end(), [&](const auto &a, const auto &b) {
             return finiteOf(a.second) < finiteOf(b.second);
          });
 
-      const double minY =
-         std::log10(std::max(1e-9, minErr->second));
-      const double maxY =
-         std::log10(std::max(1e-9, maxErr->second));
+      const double minY = std::log10(std::max(1e-9, minErr->second));
+      const double maxY = std::log10(std::max(1e-9, maxErr->second));
       const double targetY = std::log10(MIN_RECENT_AVERAGE_ERROR);
       const double bestY = std::log10(std::max(1e-9, bestError));
       const double lo = std::min({minY, targetY, bestY});
@@ -179,9 +173,9 @@ ftxui::Element errorPlot(
 
       const auto yOf = [&](double err) {
          return clampI(
-            static_cast<int>((1.0 - (std::log10(std::max(1e-9, err)) - lo) /
-                                       range) *
-                             static_cast<double>(H - 1)),
+            static_cast<int>(
+               (1.0 - (std::log10(std::max(1e-9, err)) - lo) / range) *
+               static_cast<double>(H - 1)),
             0, H - 1);
       };
 
@@ -200,11 +194,9 @@ ftxui::Element errorPlot(
          }
       }
 
-      const auto [firstPass, lastPass] =
-         std::minmax_element(history.begin(), history.end(),
-                             [](const auto &a, const auto &b) {
-                                return a.first < b.first;
-                             });
+      const auto [firstPass, lastPass] = std::minmax_element(
+         history.begin(), history.end(),
+         [](const auto &a, const auto &b) { return a.first < b.first; });
       const std::size_t span =
          std::max<std::size_t>(1, lastPass->first - firstPass->first);
       const auto xOf = [&](std::size_t pass) {
@@ -278,8 +270,7 @@ ftxui::Element heatGrid(const std::vector<double> &v, std::size_t cols,
 
 /// Learned first-layer feature maps: a mini viridis heatmap per hidden neuron.
 /// Weights are symmetric around 0 (0 = neutral teal), scaled by max |w|.
-ftxui::Element featuresPanel(const Dashboard::Snapshot &s,
-                             std::size_t gridCols)
+ftxui::Element featuresPanel(const Dashboard::Snapshot &s, std::size_t gridCols)
 {
    using namespace ftxui;
    constexpr std::size_t MAX_NEURONS = 12;
@@ -290,8 +281,7 @@ ftxui::Element featuresPanel(const Dashboard::Snapshot &s,
    }
 
    Elements rows;
-   const std::size_t nShown =
-      std::min(MAX_NEURONS, s.features.size());
+   const std::size_t nShown = std::min(MAX_NEURONS, s.features.size());
    rows.reserve(nShown + 2);
    for (std::size_t n = 0; n < nShown; ++n) {
       const auto &wv = s.features[n];
@@ -304,14 +294,12 @@ ftxui::Element featuresPanel(const Dashboard::Snapshot &s,
       }));
    }
    rows.push_back(separator());
-   rows.push_back(
-      hbox({text("scale (0 = teal): ") | dim,
-            text(std::format("{:.3f}", s.featuresScale)) | bold}));
+   rows.push_back(hbox({text("scale (0 = teal): ") | dim,
+                        text(std::format("{:.3f}", s.featuresScale)) | bold}));
    if (s.features.size() > nShown) {
-      rows.push_back(text("... " +
-                          std::to_string(s.features.size() - nShown) +
-                          " more") |
-                     dim);
+      rows.push_back(
+         text("... " + std::to_string(s.features.size() - nShown) + " more") |
+         dim);
    }
    return window(
       text(std::format("Features L0-L1  {} neurons", s.features.size())) |
@@ -442,7 +430,7 @@ void Dashboard::onFinished(Net &net, double elapsedMs)
       snapshot_.finished = true;
       snapshot_.elapsedMs = elapsedMs;
 #ifdef BPNN_TUI
-       snapshot_.interrupted = requestedInterrupt_.load();
+      snapshot_.interrupted = requestedInterrupt_.load();
 #endif
    }
 }
@@ -462,8 +450,7 @@ void Dashboard::printSummary() const
       std::cout << std::setprecision(1) << ", " << s.elapsedMs << " ms";
    }
    if (s.totalCount > 0) {
-      std::cout << std::setprecision(1)
-                << ", accuracy "
+      std::cout << std::setprecision(1) << ", accuracy "
                 << 100.0 * static_cast<double>(s.correctCount) /
                       static_cast<double>(s.totalCount)
                 << "% (" << s.correctCount << "/" << s.totalCount << ")";
@@ -489,7 +476,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
 
    // --- status badge ---------------------------------------------------
    const std::string badge =
-      s.finished ? "DONE" : (paused ? "PAUSED" : "RUNNING");
+      s.finished ? "DONE " : (paused ? "PAUSED " : "RUNNING ");
    const auto badgeColor =
       s.finished ? Color::Green : (paused ? Color::Yellow : Color::Cyan);
 
@@ -498,17 +485,20 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
       hbox({
          text(" " APPNAME_VERSION " ") | bold | color(Color::Green),
          separator(),
-         text("live training: ") | dim,
+         text(" live training: ") | dim,
          text(inputFileName_) | bold | color(Color::Yellow),
          filler(),
          text(badge) | bold | color(badgeColor),
       }),
       hbox({
-         text(std::format("pass {:>7}   speed {:>7.0f}/s   err {:.6f}", s.pass,
+         text("                   "),
+         separator(),
+         text(std::format(" pass {:>7}   speed {:>7.0f}/s   err {:.6f}", s.pass,
                           s.passesPerSec, s.avgError)) |
             dim,
-         filler(),
-         text((paused ? "paused" : "running")) | dim,
+         filler()
+         // ,
+         // text((paused ? "paused" : "running")) | dim,
       }),
    });
 
@@ -516,39 +506,38 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
    std::vector<Element> layers;
    for (std::size_t i = 0; i < topology.size(); ++i) {
       const auto kind =
-         (i + 1 == topology.size()) ? "output" : (i == 0 ? "input" : "hidden");
-      layers.push_back(row(std::format("L{} {}: {} neurons", i, kind,
-                                       topology[i]),
-                           actNames[i]));
+         (i + 1 == topology.size()) ? "output" : (i == 0 ? " input" : "hidden");
+      layers.push_back(row(
+         std::format("L{} {}: {} neurons", i, kind, topology[i]), actNames[i]));
    }
    const auto settings = window(
-      panel("Settings"),
+      panel(" Settings "),
       vbox({
          row("ETA", std::format("{:.4f}", trnData_.ETA)),
          row("ALPHA", std::format("{:.4f}", trnData_.ALPHA)),
-         row("Seed", std::to_string(trnData_.seed)),
+         row("Seed RNG", std::to_string(trnData_.seed)),
          separator(),
          vbox(std::move(layers)),
          separator(),
-         text("every: " + std::to_string(s.renderEvery) + " passes") | dim,
+         text("Render every: " + std::to_string(s.renderEvery) + " passes") |
+            dim,
       }));
 
    // --- training / progress --------------------------------------------
-   const double passFrac = std::clamp(
-      static_cast<double>(s.pass) / static_cast<double>(MAX_ITERATIONS), 0.0,
-      1.0);
+   const double passFrac = std::clamp(static_cast<double>(s.pass) /
+                                         static_cast<double>(MAX_ITERATIONS),
+                                      0.0, 1.0);
    const double errFrac = std::clamp(
       (0.5 - s.avgError) / (0.5 - MIN_RECENT_AVERAGE_ERROR), 0.0, 1.0);
 
    std::string eta;
    if (not s.finished) {
-      const double remaining =
-         s.avgError > MIN_RECENT_AVERAGE_ERROR
-            ? static_cast<double>(MAX_ITERATIONS - s.pass)
-            : 0.0;
+      const double remaining = s.avgError > MIN_RECENT_AVERAGE_ERROR
+                                  ? static_cast<double>(MAX_ITERATIONS - s.pass)
+                                  : 0.0;
       if (s.passesPerSec > 0.0 and remaining > 0.0) {
-         const auto seconds = static_cast<std::size_t>(
-            std::max(0.0, remaining / s.passesPerSec));
+         const auto seconds =
+            static_cast<std::size_t>(std::max(0.0, remaining / s.passesPerSec));
          eta = std::format("{:02}:{:02}:{:02}", seconds / 3600,
                            (seconds / 60) % 60, seconds % 60);
       } else {
@@ -573,7 +562,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
          row("Elapsed", std::format("{:.1f} ms", s.elapsedMs)));
    }
    const auto training =
-      window(panel(s.finished ? "Training (done)" : "Training"),
+      window(panel(s.finished ? " Training (done) " : " Training "),
              vbox(std::move(trainingRows)));
 
    // --- responsive sizes (recomputed every frame) ------------------------
@@ -597,13 +586,12 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
       histMax = mx->second;
    }
    const auto plot = window(
-      panel(std::format("Error history (log)  avg {:.6f}  best {:.6f}",
+      panel(std::format(" Error history (log)  avg {:.6f}  best {:.6f} ",
                         s.avgError, s.bestError)),
       vbox({
          errorPlot(s.errorHistory, s.bestError, plotW, plotH) | border,
          hbox({
-            text(std::format("range [{:.4f}, {:.4f}]", histMin, histMax)) |
-               dim,
+            text(std::format("range [{:.4f}, {:.4f}]", histMin, histMax)) | dim,
             filler(),
             text(std::format("target {:.3f}", MIN_RECENT_AVERAGE_ERROR)) |
                color(Color::Yellow),
@@ -619,8 +607,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
          std::minmax_element(s.inputs.begin(), s.inputs.end());
       const double gridMin = *loIt;
       const double gridMax = *hiIt;
-      const std::size_t grows =
-         (s.inputs.size() + gridCols - 1) / gridCols;
+      const std::size_t grows = (s.inputs.size() + gridCols - 1) / gridCols;
       sampleRows.push_back(
          hbox({heatGrid(s.inputs, gridCols, grows, gridMin, gridMax)}) |
          size(WIDTH, LESS_THAN, gridCols * 2 + 4));
@@ -634,10 +621,10 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
                             ? trnData_.output_names[o]
                             : std::format("out {}", o);
       outRows.push_back(hbox({
-         text(std::format("{:>8}", name)) | dim | size(WIDTH, EQUAL, 9),
+         text(std::format(" {:>8}", name)) | dim | size(WIDTH, EQUAL, 15),
          outBar(s.results[o], s.targets[o]) | flex,
-         text(std::format("{:+.3f}", s.results[o])) |
-            size(WIDTH, EQUAL, 8) | color(Color::Cyan) | bold,
+         text(std::format("{:+.3f}", s.results[o])) | size(WIDTH, EQUAL, 8) |
+            color(Color::Cyan) | bold,
       }));
    }
 
@@ -655,8 +642,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
       text("targets: ") | dim,
       text(join(s.targets)) | color(Color::Yellow),
    }));
-   sampleRows.push_back(
-      hbox({text("outputs: ") | dim, text(join(s.results))}));
+   sampleRows.push_back(hbox({text("outputs: ") | dim, text(join(s.results))}));
    if (not outRows.empty()) {
       sampleRows.push_back(separator());
       sampleRows.push_back(vbox(std::move(outRows)));
@@ -670,19 +656,18 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
    }));
    sampleRows.push_back(separator());
    if (s.finished) {
-sampleRows.push_back(text("done — press q to exit (summary follows)") |
-                            dim);
+      sampleRows.push_back(text("done — press q to exit (summary follows)") |
+                           dim);
    } else {
       sampleRows.push_back(
-         correct
-            ? text(std::format("class '{}'  correct", className)) |
-                 color(Color::Green)
-            : text(std::format("class '{}'  miss", className)) |
-                 color(Color::Red));
+         correct ? text(std::format("class '{}': correct", className)) |
+                      color(Color::Green)
+                 : text(std::format("class '{}': miss", className)) |
+                      color(Color::Red));
    }
 
-   const auto sample = window(panel("Current sample"),
-                              vbox(std::move(sampleRows)));
+   const auto sample =
+      window(panel(" Current sample "), vbox(std::move(sampleRows)));
 
    // --- learned features ------------------------------------------------
    Element features = text("");
@@ -692,8 +677,7 @@ sampleRows.push_back(text("done — press q to exit (summary follows)") |
       std::size_t fcols =
          trnData_.show_max_inputs > 0
             ? static_cast<std::size_t>(trnData_.show_max_inputs)
-            : static_cast<std::size_t>(
-                 std::sqrt(std::max<double>(1.0, fanIn)));
+            : static_cast<std::size_t>(std::sqrt(std::max<double>(1.0, fanIn)));
       features = featuresPanel(s, fcols) | border;
    }
 
@@ -704,7 +688,7 @@ sampleRows.push_back(text("done — press q to exit (summary follows)") |
       text(" +/- render ") | color(Color::White) | bgcolor(Color::GrayDark),
       text(" scroll ") | color(Color::White) | bgcolor(Color::GrayDark),
       filler(),
-      text((paused ? "paused" : "running")) | dim,
+      text((paused ? "paused " : "running ")) | dim,
    });
 
    // --- assemble the scrollable dashboard body --------------------------
@@ -720,7 +704,8 @@ sampleRows.push_back(text("done — press q to exit (summary follows)") |
       plot | size(HEIGHT, EQUAL, plotH + 4),
    });
 
-   const int viewH = std::max(2, H - 3); // footer (~3 rows incl. border) pinned.
+   const int viewH =
+      std::max(2, H - 3); // footer (~3 rows incl. border) pinned.
    body->ComputeRequirement();
    const int contentMinY =
       std::max(viewH, static_cast<int>(body->requirement().min_y));
@@ -730,26 +715,25 @@ sampleRows.push_back(text("done — press q to exit (summary follows)") |
    // math uses (viewH-1)/2 and size(viewH-1), so request offset + (viewH-1)/2
    // to make exactly `offset` content rows pan out of view.
    const int yAnchor = offset + (viewH - 1) / 2;
-   const auto scrolled =
-      body | focusPosition(0, yAnchor) | vscroll_indicator | frame |
-      size(HEIGHT, EQUAL, viewH);
+   const auto scrolled = body | focusPosition(0, yAnchor) | vscroll_indicator |
+                         frame | size(HEIGHT, EQUAL, viewH);
 
    Element doc = vbox({scrolled, footer | border});
 
    // --- help overlay ----------------------------------------------------
    if (showHelp) {
-      const auto helpBox = window(
-         panel("Keys"),
-         vbox({
-            row("q / Esc", "stop training and exit"),
-            row("p / Space", "pause / resume"),
-            row("h / ?", "toggle this help"),
-            row("+ / -", "halve / double render cadence"),
-            row("up / down", "scroll 1 line"),
-            row("PgUp / PgDn", "scroll half a page"),
-            row("Home / End", "jump to top / bottom"),
-            row("mouse wheel", "scroll"),
-         })) |
+      const auto helpBox =
+         window(panel(" Keys "),
+                vbox({
+                   row("q / Esc", "stop training and exit"),
+                   row("p / Space", "pause / resume"),
+                   row("h / ?", "toggle this help"),
+                   row("+ / -", "halve / double render cadence"),
+                   row("up / down", "scroll 1 line"),
+                   row("PgUp / PgDn", "scroll half a page"),
+                   row("Home / End", "jump to top / bottom"),
+                   row("mouse wheel", "scroll"),
+                })) |
          size(WIDTH, EQUAL, 48) | center;
       doc = dbox({doc, helpBox});
    }
@@ -763,7 +747,6 @@ void Dashboard::run(NNtrainer &trainer)
 
    auto screen = ScreenInteractive::Fullscreen();
    screen_ = &screen;
-
    {
       std::lock_guard<std::mutex> lock(mutex_);
       snapshot_ = Snapshot{};
@@ -790,8 +773,7 @@ void Dashboard::run(NNtrainer &trainer)
          }
          if (screen_ and loopReady_.load(std::memory_order_acquire) and
              lastRevision != revision_.load(std::memory_order_acquire)) {
-            lastRevision =
-               revision_.load(std::memory_order_acquire);
+            lastRevision = revision_.load(std::memory_order_acquire);
             screen_->PostEvent(Event::Custom);
          }
       }
@@ -810,8 +792,7 @@ void Dashboard::run(NNtrainer &trainer)
             std::lock_guard<std::mutex> lock(mutex_);
             s = snapshot_;
          }
-         return buildDocument(s, trainer.isPaused(),
-                              static_cast<int>(dim.dimx),
+         return buildDocument(s, trainer.isPaused(), static_cast<int>(dim.dimx),
                               static_cast<int>(dim.dimy), showHelp_);
       }),
       [this, &trainer, &keepRefreshing, &scrollBy](Event event) {
@@ -880,8 +861,7 @@ void Dashboard::run(NNtrainer &trainer)
             }
             return true;
          }
-         if (event == Event::Character('p') or
-             event == Event::Character(' ')) {
+         if (event == Event::Character('p') or event == Event::Character(' ')) {
             trainer.setPaused(not trainer.isPaused());
             return true;
          }
@@ -909,7 +889,8 @@ void Dashboard::run(NNtrainer &trainer)
    try {
       loopReady_.store(true, std::memory_order_release);
       screen.Loop(std::move(component));
-   } catch (...) {
+   }
+   catch (...) {
       loopReady_.store(false, std::memory_order_relaxed);
       keepRefreshing.store(false, std::memory_order_relaxed);
       if (trainerThread.joinable()) {

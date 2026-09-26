@@ -30,8 +30,7 @@ class Dashboard final : public NNtrainerObserver
 {
 public:
    Dashboard(Net &net, const TrainingData &trnData,
-             std::string inputFileName = {},
-             std::size_t renderEvery = 50);
+             std::string inputFileName = {}, std::size_t renderEvery = 50);
    ~Dashboard() override = default;
 
    Dashboard(const Dashboard &) = delete;
@@ -45,7 +44,7 @@ public:
    /// a plain-text summary once the session ends (also on 'q'/Esc).
    void run(NNtrainer &trainer);
 
-void onPass(std::size_t pass, bool show, Net &net,
+   void onPass(std::size_t pass, bool show, Net &net,
                const nndef::values_layer_t &inputVals,
                const nndef::values_layer_t &resultVals,
                const nndef::values_layer_t &targetVals) override;
@@ -53,8 +52,7 @@ void onPass(std::size_t pass, bool show, Net &net,
 
    /// Immutable snapshot of the training state, produced by the trainer thread
    /// under mutex_ and consumed by the UI thread for rendering.
-   struct Snapshot
-   {
+   struct Snapshot {
       std::size_t pass{0};
       double avgError{0.5};
       double bestError{0.5};
@@ -89,7 +87,7 @@ private:
    Snapshot snapshot_{};
    mutable std::mutex mutex_{};
 
-Net &net_;
+   Net &net_;
    const TrainingData &trnData_;
    std::string inputFileName_;
    std::atomic<std::size_t> renderEvery_{50};
