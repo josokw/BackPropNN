@@ -110,4 +110,4 @@ out: 0.4    0.0    0.0   0.0        0.0        0.0        0.0      0.0  0.0  0.0
 
 show_max_inputs: 5
 show_max_outputs: 1
-output_names: pixels% solid empty vertical horizontal main_diag anti_diag X cross border noise
+output_names: pixels%/100 solid empty vertical horizontal main_diag anti_diag X cross border noise

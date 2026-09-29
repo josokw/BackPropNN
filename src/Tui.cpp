@@ -103,7 +103,7 @@ ftxui::Color viridis(double t)
 ftxui::Element outBar(double value, double target)
 {
    using namespace ftxui;
-   constexpr int N = 34;
+   constexpr int N = 50;// 34;
    double lo = std::min(value, target);
    double hi = std::max(value, target);
    if (lo > 0.0) {
@@ -276,7 +276,7 @@ ftxui::Element featuresPanel(const Dashboard::Snapshot &s, std::size_t gridCols)
    constexpr std::size_t MAX_NEURONS = 12;
 
    if (s.features.empty()) {
-      return window(text("Features L0-L1") | bold | color(Color::Cyan),
+      return window(text(" Features L0-L1") | bold | color(Color::Cyan),
                     text("no first-layer weights yet") | dim);
    }
 
@@ -302,7 +302,7 @@ ftxui::Element featuresPanel(const Dashboard::Snapshot &s, std::size_t gridCols)
          dim);
    }
    return window(
-      text(std::format("Features L0-L1  {} neurons", s.features.size())) |
+      text(std::format(" Features L0-L1  {} neurons", s.features.size())) |
          bold | color(Color::Cyan),
       vbox(std::move(rows)));
 }
@@ -491,8 +491,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
          text(badge) | bold | color(badgeColor),
       }),
       hbox({
-         text("                   "),
-         separator(),
+         text("                   "), separator(),
          text(std::format(" pass {:>7}   speed {:>7.0f}/s   err {:.6f}", s.pass,
                           s.passesPerSec, s.avgError)) |
             dim,
@@ -513,9 +512,9 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
    const auto settings = window(
       panel(" Settings "),
       vbox({
-         row("ETA", std::format("{:.4f}", trnData_.ETA)),
-         row("ALPHA", std::format("{:.4f}", trnData_.ALPHA)),
-         row("Seed RNG", std::to_string(trnData_.seed)),
+         row("ETA, learning rate:", std::format("{:.4f}", trnData_.ETA)),
+         row("ALPHA, momemtum:", std::format("{:.4f}", trnData_.ALPHA)),
+         row("Seed RNG:", std::to_string(trnData_.seed)),
          separator(),
          vbox(std::move(layers)),
          separator(),
@@ -647,6 +646,7 @@ ftxui::Element Dashboard::buildDocument(const Snapshot &s, bool paused, int W,
       sampleRows.push_back(separator());
       sampleRows.push_back(vbox(std::move(outRows)));
    }
+   sampleRows.push_back(hbox({text("class: ") | dim, text(className) | bold}));
    sampleRows.push_back(hbox({
       text("accuracy: ") | dim,
       text(std::format("{} / {} ({:.1f}%)", s.correctCount, s.totalCount,

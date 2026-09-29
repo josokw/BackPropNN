@@ -1,6 +1,6 @@
 # BackPropNN — User Manual
 
-**Application:** `backpropnn` **v0.8.1**
+**Application:** `backpropnn` **v0.8.3**
 
 A back-propagation neural network trainer in Modern C++20 with an optional
 live terminal dashboard (TUI).
